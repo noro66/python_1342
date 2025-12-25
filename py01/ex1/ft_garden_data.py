@@ -5,9 +5,9 @@ class Plant:
         self.age = age
 
 
-rose_obj = Plant("Rose", 25, 30)
-sunflower_obj = Plant("Sunflower", 80, 45)
-cactus_obj = Plant("Cactus", 15, 120)
+rose = Plant("Rose", 25, 30)
+sunflower = Plant("Sunflower", 80, 45)
+cactus = Plant("Cactus", 15, 120)
 
 
 def print_plant_info(plant: Plant) -> None:
@@ -15,5 +15,5 @@ def print_plant_info(plant: Plant) -> None:
 
 
 print("=== Garden Plant Registry ===")
-for obj in (rose_obj, sunflower_obj, cactus_obj):
+for obj in (rose, sunflower, cactus):
     print_plant_info(obj)

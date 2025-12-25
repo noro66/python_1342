@@ -11,7 +11,7 @@ cactus_obj = Plant("Cactus", 15, 120)
 
 
 def print_plant_info(plant: Plant) -> None:
-    print(f"{plant.name.capitalize()}: {plant.height}cm, {plant.age} days old")
+    print(f"{plant.name}: {plant.height}cm, {plant.age} days old")
 
 
 print("=== Garden Plant Registry ===")

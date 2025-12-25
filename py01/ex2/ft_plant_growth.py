@@ -19,13 +19,14 @@ class Plant:
 rose = Plant("Rose", 25, 30)
 sunflower = Plant("Sunflower", 80, 45)
 cactus = Plant("Cactus", 15, 120)
-
-for day in range(0, 7):
+day = 0
+while day < 7:
     print(f"=== Day {day + 1} ===")
     for obj in (rose, sunflower, cactus):
         obj.get_info()
         obj.grow(1)
         obj.age(1)
+    day += 1
 
 for obj in (rose, sunflower, cactus):
     print(f"Growth this week for {obj.name}: +{obj.growth}cm")

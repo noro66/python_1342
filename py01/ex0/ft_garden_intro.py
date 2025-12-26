@@ -1,3 +1,9 @@
+"""Exercise 1: First Python Program.
+
+This program displays information about a plant in the garden.
+Demonstrates the use of if __name__ == "__main__" pattern.
+"""
+
 if __name__ == "__main__":
     plant_name: str = "Rose"
     plant_height: int = 13

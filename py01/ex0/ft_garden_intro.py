@@ -1,4 +1,4 @@
-"""Exercise 1: First Python Program.
+"""Exercise 0: First Python Program.
 
 This program displays information about a plant in the garden.
 Demonstrates the use of if __name__ == "__main__" pattern.

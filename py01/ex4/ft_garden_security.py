@@ -72,8 +72,7 @@ class SecurePlant:
 print("=== Garden Security System ===")
 rose = SecurePlant("Rose", 21, 23)
 print(f"Plant created: {rose.name}")
-rose.set_height(25)
+rose.set_height(-25)
 rose.set_age(30)
-rose.set_height(-5)
 rose_info = f"{rose.name} ({rose.get_height()}cm, {rose.get_age()} days)"
 print(f"\nCurrent plant: {rose_info}")

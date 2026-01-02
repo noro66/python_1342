@@ -3,9 +3,9 @@ def water_plants(plant_list):
         print("Opening watering system")
         for plant in plant_list:
             if plant is None:
-                raise ValueError("Cannot water None - invalid plant!")
+                raise Exception("Cannot water None - invalid plant!")
             print(f"Watering {plant}")
-    except ValueError as e:
+    except Exception as e:
         print(f"Error: {e}")
     finally:
         print("Closing watering system (cleanup)")

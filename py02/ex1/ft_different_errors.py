@@ -1,4 +1,14 @@
 def garden_operations(error_value):
+    """Trigger different types of errors based on input.
+
+    Args:
+        error_value: String indicating which error to trigger.
+    Raises:
+        ValueError: When error_value is "value_error".
+        ZeroDivisionError: When error_value is "zero_div_error".
+        FileNotFoundError: When error_value is "file_not_found_error".
+        KeyError: When error_value is "key_error".
+    """
     if error_value == "value_error":
         i = int('abc')
         return (i)
@@ -14,6 +24,7 @@ def garden_operations(error_value):
 
 
 def test_error_types():
+    """Demonstrate handling different types of Python errors."""
     print("=== Garden Error Types Demo ===")
 
     print("Testing ValueError...")

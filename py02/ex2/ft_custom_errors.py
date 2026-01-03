@@ -1,16 +1,28 @@
 class GardenError(Exception):
+    """Base exception for all garden-related errors."""
     pass
 
 
 class PlantError(GardenError):
+    """Exception raised for plant-related problems."""
     pass
 
 
 class WaterError(GardenError):
+    """Exception raised for water-related problems."""
     pass
 
 
 def check_plant(day_since_watering, water_amount_in_tank):
+    """Check plant and water conditions.
+
+    Args:
+        day_since_watering: Number of days since last watering.
+        water_amount_in_tank: Amount of water in tank.
+    Raises:
+        PlantError: If plant has not been watered for too long.
+        WaterError: If water tank is too low.
+    """
     if day_since_watering > 7:
         raise PlantError("The tomato plant is wilting!")
     if water_amount_in_tank < 75:
@@ -18,6 +30,7 @@ def check_plant(day_since_watering, water_amount_in_tank):
 
 
 def test_custom_errors():
+    """Demonstrate custom exception handling and inheritance."""
     try:
         print("Testing PlantError...")
         check_plant(9, 89)

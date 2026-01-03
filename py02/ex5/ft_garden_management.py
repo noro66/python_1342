@@ -54,28 +54,39 @@ def test_garden_management():
     print("Adding plants to garden...")
     try:
         garden.add_plant("tomato")
+        print("Added tomato successfully")
     except PlantError as e:
-        print(e)
+        print(f"Error adding plant: {e}")
     try:
         garden.add_plant("lettuce")
+        print("Added lettuce successfully")
     except PlantError as e:
-        print(e)
+        print(f"Error adding plant: {e}")
     try:
         garden.add_plant("")
+        print("Added some plant successfully")
     except PlantError as e:
-        print(e)
+        print(f"Error adding plant: {e}")
 
     garden.water_plants()
 
-    # Section 3: Checking plant health
     print("Checking plant health...")
-    # Check tomato with good values (5, 8)
-    garden.check_plant_health("tomato", 5, 8)
-    # Check lettuce with bad water level (15, 6)
+    try:
+        garden.check_plant_health("tomato", 5, 8)
+    except WaterError as e:
+        print(f"Error checking tomato: {e}")
 
-    # Section 4: Error recovery
+    try:
+        garden.check_plant_health("lettuce", 15, 6)
+    except WaterError as e:
+        print(f"Error checking lettuce: {e}")
+
     print("Testing error recovery...")
-    # Raise and catch a GardenError
+    try:
+        raise WaterError("Not enough water in tank")
+    except GardenError as e:
+        print(f"Caught GardenError: {e}")
+    print("System recovered and continuing...")
 
     print("Garden management system test complete!")
 

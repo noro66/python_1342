@@ -89,14 +89,19 @@ if __name__ == "__main__":
 
     print()
     print("=== Transaction: Alice gives Bob 2 potions ===")
-    alice_inventory["potion"]["quantity"] -= 2
-    bob_inventory["potion"]["quantity"] += 2
-    print("Transaction successful!")
+    if alice_inventory.get("potion", {}).get("quantity", 0) >= 2:
+        alice_inventory["potion"]["quantity"] -= 2
+        bob_inventory["potion"]["quantity"] += 2
+        print("Transaction successful!")
+    else:
+        print("Transaction failed: 'alice have less than 2 potion'")
 
     print()
     print("=== Updated Inventories ===")
-    print(f"Alice potions: {alice_inventory['potion']['quantity']}")
-    print(f"Bob potions: {bob_inventory['potion']['quantity']}")
+    print("Alice potions:",
+          f"{alice_inventory.get('potion', {}).get('quantity', 0)}")
+    print("Bob potions:",
+          f" {bob_inventory.get('potion', {}).get('quantity', 0)}")
 
     print()
     print("=== Inventory Analytics ===")

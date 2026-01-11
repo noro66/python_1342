@@ -289,104 +289,125 @@ sample_game_data = {
 
 
 def list_comprehensions(sample_data):
-    print("=== List Comprehension Examples ===")
-    hight_score_list = [
-                        player
-                        for player, details in sample_data["players"].items()
-                        if details["total_score"] > 2000
-                        ]
-    score_doubled = [
-     details["total_score"] * 2
-     for _, details in sample_data["players"].items()
-    ]
-    active_players = [
-        player
-        for player, details in sample_data["players"].items()
-        if details["sessions_played"] > 45
-    ]
-    print(f"High scorers (>2000): {hight_score_list}")
-    print(f"Scores doubled: {score_doubled}")
-    print(f"Active players: {active_players}")
-    print()
+    if sample_data:
+        print("=== List Comprehension Examples ===")
+        hight_score_list = [
+                            player
+                            for player, details
+                            in sample_data.get("players", {}).items()
+                            if details.get("total_score", 0) > 2000
+                            ]
+        score_doubled = [
+         details.get("total_score", 0) * 2
+         for _, details in sample_data.get("players", {}).items()
+        ]
+        active_players = [
+            player
+            for player, details in sample_data.get("players", {}).items()
+            if details.get("sessions_played", 0) > 45
+        ]
+        print(f"High scorers (>2000): {hight_score_list}")
+        print(f"Scores doubled: {score_doubled}")
+        print(f"Active players: {active_players}")
+        print()
 
 
 def dict_comprehensions(sample_data):
-    print("=== Dict Comprehension Examples ===")
-    player_scores = {
-        player: details["total_score"]
-        for player, details in sample_data["players"].items()
-    }
-    mode_types_played = {
-        session["mode"]:  sum([1 if ses["mode"] == session["mode"] else 0
-                               for ses in sample_data["sessions"]])
-        for session in sample_data['sessions']
-    }
-    achievement_counts = {
-        name: details["achievements_count"]
-        for name, details in sample_data["players"].items()
-    }
-    print(f"Player scores: {player_scores}")
-    print(f"mode type played : {mode_types_played}")
-    print(f"Achievement counts: {achievement_counts}")
-    print()
+    if sample_data:
+        print("=== Dict Comprehension Examples ===")
+        player_scores = {
+            player: details.get("total_score")
+            for player, details in sample_data.get("players", {}).items()
+        }
+        mode_types_played = {
+            session.get("mode", ""):
+            sum([1 if ses.get("mode", "") == session.get("mode", "") else 0
+                for ses in sample_data.get("sessions", [])])
+            for session in sample_data.get('sessions', [])
+        }
+        achievement_counts = {
+            name: details.get("achievements_count", 0)
+            for name, details in sample_data.get("players", {}).items()
+        }
+        print(f"Player scores: {player_scores}")
+        print(f"mode type played : {mode_types_played}")
+        print(f"Achievement counts: {achievement_counts}")
+        print()
 
 
 def set_comprehensions(sample_data):
-    print("=== Set Comprehension Examples ===")
-    uniq_players: set = {
-        session["player"]
-        for session in sample_data["sessions"]
+    if sample_data:
+        print("=== Set Comprehension Examples ===")
+        uniq_players: set = {
+            session.get("player", "")
+            for session in sample_data.get("sessions", [])
+            }
+        uniq_achievements = {
+            session.get("achievement", "")
+            for session in sample_data.get("sessions", [])
         }
-    uniq_achievements = {
-        session["achievement"]
-        for session in sample_data["sessions"]
-    }
-    active_modes = {
-        session["mode"]
-        for session in sample_data["sessions"]
-        if sum(ses["duration_minutes"] for ses in sample_data["sessions"]
-               if ses["mode"] == session["mode"]) > 525
-    }
-    print(f"Unique session players: {uniq_players}")
-    print(f"Unique session achievements: {uniq_achievements}")
-    print(f"Active modes: {active_modes}")
-    print()
+        active_modes = {
+            session.get("mode", "")
+            for session in sample_data.get("sessions", [])
+            if sum(ses.get(
+                "duration_minutes", 0
+                ) for ses in sample_data.get("sessions", [])
+                   if ses.get("mode", "") == session.get("mode", "")) > 525
+        }
+        print(f"Unique session players: {uniq_players}")
+        print(f"Unique session achievements: {uniq_achievements}")
+        print(f"Active modes: {active_modes}")
+        print()
 
 
 def combined_analytics(sample_data):
-    print("=== Combined Analysis ===")
-    players = {
-        player
-        for player in sample_data["players"].keys()
-    }
-    total_players = sum([1 for _ in players])
+    if sample_data:
+        print("=== Combined Analysis ===")
+        players = {
+            player
+            for player in sample_data.get("players", {}).keys()
+        }
+        total_players = sum([1 for _ in players])
 
-    uniq_achievements = {
-        session["achievement"]
-        for session in sample_data["sessions"]
-    }
-    total_uniq_achievement = sum([1 for _ in uniq_achievements])
+        uniq_achievements = {
+            session.get("achievement", "")
+            for session in sample_data.get("sessions", [])
+        }
+        total_uniq_achievement = sum([1 for _ in uniq_achievements])
 
-    score_sum = sum([detail["total_score"]
-                    for _, detail in sample_data["players"].items()])
-    average_score = score_sum / total_players
-    max_score = max([detail["total_score"]
-                     for _, detail in sample_data["players"].items()])
-    top_performer = {
-        player: detail
-        for player, detail in sample_data["players"].items()
-        if detail["total_score"] == max_score
-    }
-    t_p_name,  = top_performer
-    t_p_score,  = top_performer[t_p_name]["total_score"],
-    t_p_achievement = top_performer[t_p_name]["achievements_count"]
-    print(f"Total players: {total_players}")
-    print(f"Total unique achievements: {total_uniq_achievement}")
-    print(f"Average score: {average_score:.1f}")
-    print(
-        f"Top performer: {t_p_name}",
-        f"({t_p_score} points, {t_p_achievement} achievements)"
-        )
+        score_sum = sum([detail.get("total_score", 0)
+                        for _, detail in sample_data.get(
+                            "players", {}).items()]
+                        )
+        average_score = score_sum / total_players if total_players > 0 else 0
+        max_score = max([detail.get("total_score", 0)
+                         for _, detail in sample_data.get(
+                             "players", {}).items()],
+                        default=0
+                        )
+        top_performer = {
+            player: detail
+            for player, detail in sample_data.get("players", {}).items()
+            if detail.get("total_score", 0) == max_score
+        }
+        if top_performer:
+            t_p_name,  = top_performer
+            t_p_score,  = top_performer.get(
+                t_p_name, {}).get("total_score", 0),
+            t_p_achievement = top_performer.get(
+                t_p_name, {}
+                ).get("achievements_count", 0)
+        else:
+            t_p_name = "No players"
+            t_p_score = 0
+            t_p_achievement = 0
+        print(f"Total players: {total_players}")
+        print(f"Total unique achievements: {total_uniq_achievement}")
+        print(f"Average score: {average_score:.1f}")
+        print(
+            f"Top performer: {t_p_name}",
+            f"({t_p_score} points, {t_p_achievement} achievements)"
+            )
 
 
 if __name__ == "__main__":
@@ -396,3 +417,5 @@ if __name__ == "__main__":
     dict_comprehensions(sample_game_data)
     set_comprehensions(sample_game_data)
     combined_analytics(sample_game_data)
+    if not sample_game_data:
+        print("[Warning]: There is no data to process!")

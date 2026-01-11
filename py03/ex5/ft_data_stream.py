@@ -26,6 +26,10 @@ def primes():
 def game_events(count: int):
     players = ["alice", "bob", "charlie", "diana", "eve"]
     actions = ["killed monster", "found treasure", "leveled up"]
+    if count < 1:
+        print("[Error]: please inter a positive number greater than 0!")
+        return False
+    print(f"Processing {count} game events...")
     for event_num in range(count):
         player_name = players[event_num % 5]
         action = actions[event_num % 3]
@@ -36,56 +40,56 @@ def game_events(count: int):
             "level": level,
             "action": action
         }
+    print()
 
 
 if __name__ == "__main__":
     print("=== Game Data Stream Processor ===")
     print()
-    print("Processing 1000 game events...")
-    print()
-    event_gen = game_events(1000)
-    event_counter = 1
-    high_level_count = 0
-    treasure_events = 0
-    level_up_events = 0
-    total_events = 0
-    timer = 0
-    for event in event_gen:
-        total_events += 1
+    event_gen = game_events(-5)
+    if event_gen:
+        event_counter = 1
+        high_level_count = 0
+        treasure_events = 0
+        level_up_events = 0
+        total_events = 0
+        timer = 0
+        for event in event_gen:
+            total_events += 1
 
-        if event["level"] >= 10:
-            high_level_count += 1
+            if event["level"] >= 10:
+                high_level_count += 1
 
-        if event["action"] == "found treasure":
-            treasure_events += 1
+            if event["action"] == "found treasure":
+                treasure_events += 1
 
-        if event["action"] == "leveled up":
-            level_up_events += 1
+            if event["action"] == "leveled up":
+                level_up_events += 1
 
-        if event_counter <= 3:
-            print(
-                f"Event {event_counter}:",
-                f"Player {event['player']}",
-                f" (level {event['level']}) {event['action']}"
-                )
-        elif event_counter <= 4:
-            print("...")
-        else:
-            pass
-        event_counter += 1
-        timer += 0.000045
+            if event_counter <= 3:
+                print(
+                    f"Event {event_counter}:",
+                    f"Player {event['player']}",
+                    f" (level {event['level']}) {event['action']}"
+                    )
+            elif event_counter <= 4:
+                print("...")
+            else:
+                pass
+            event_counter += 1
+            timer += 0.000045
 
-    print()
+        print()
 
-    print("=== Stream Analytics ===")
-    print(f"Total events processed: {total_events}")
-    print(f"High-level players (10+): {high_level_count}")
-    print(f"Treasure events: {treasure_events}")
-    print(f"Level-up events: {level_up_events}")
-    print()
+        print("=== Stream Analytics ===")
+        print(f"Total events processed: {total_events}")
+        print(f"High-level players (10+): {high_level_count}")
+        print(f"Treasure events: {treasure_events}")
+        print(f"Level-up events: {level_up_events}")
+        print()
 
-    print("Memory usage: Constant (streaming)")
-    print(f"Processing time: {timer:.2f} seconds")
+        print("Memory usage: Constant (streaming)")
+        print(f"Processing time: {timer:.2f} seconds")
 
     print("=== Generator Demonstration ===")
     print("Fibonacci sequence (first 10): ", end="")

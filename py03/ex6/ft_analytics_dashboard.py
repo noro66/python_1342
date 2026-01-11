@@ -112,20 +112,20 @@ sample_game_data = {
 }
 
 
-def list_comprehensions(simple_data):
+def list_comprehensions(sample_data):
     print("=== List Comprehension Examples ===")
     hight_score_list = [
                         player
-                        for player, details in simple_data["players"].items()
+                        for player, details in sample_data["players"].items()
                         if details["total_score"] > 2000
                         ]
     score_doubled = [
      details["total_score"] * 2
-     for _, details in simple_data["players"].items()
+     for _, details in sample_data["players"].items()
     ]
     active_players = [
         player
-        for player, details in simple_data["players"].items()
+        for player, details in sample_data["players"].items()
         if details["sessions_played"] > 45
     ]
     print(f"High scorers (>2000): {hight_score_list}")
@@ -134,24 +134,28 @@ def list_comprehensions(simple_data):
     print()
 
 
-def dict_comprehensions(simple_data):
+def dict_comprehensions(sample_data):
     print("=== Dict Comprehension Examples ===")
     player_scores = {
         player: details["total_score"]
-        for player, details in simple_data["players"].items()
+        for player, details in sample_data["players"].items()
     }
     mode_types_played = {
         session["mode"]:  sum([1 if ses["mode"] == session["mode"] else 0
-                               for ses in simple_data["sessions"]])
-        for session in simple_data['sessions']
+                               for ses in sample_data["sessions"]])
+        for session in sample_data['sessions']
     }
     achievement_counts = {
         name: details["achievements_count"]
-        for name, details in simple_data["players"]
+        for name, details in sample_data["players"]
     }
     print(f"Player scores: {player_scores}")
     print(f"mode type played : {mode_types_played}")
     print(f"Achievement counts: {achievement_counts}")
+
+
+def set_comprehensions(sample_data):
+    pass
 
 
 if __name__ == "__main__":

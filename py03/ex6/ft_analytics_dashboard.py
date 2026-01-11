@@ -344,13 +344,49 @@ def set_comprehensions(sample_data):
     active_modes = {
         session["mode"]
         for session in sample_data["sessions"]
-        for ses in sample_data["sessions"]
         if sum(ses["duration_minutes"] for ses in sample_data["sessions"]
                if ses["mode"] == session["mode"]) > 525
     }
     print(f"Unique session players: {uniq_players}")
     print(f"Unique session achievements: {uniq_achievements}")
     print(f"Active modes: {active_modes}")
+    print()
+
+
+def combined_analytics(sample_data):
+    print("=== Combined Analysis ===")
+    players = {
+        player
+        for player in sample_data["players"].keys()
+    }
+    total_players = sum([1 for _ in players])
+
+    uniq_achievements = {
+        session["achievement"]
+        for session in sample_data["sessions"]
+    }
+    total_uniq_achievement = sum([1 for _ in uniq_achievements])
+
+    score_sum = sum([detail["total_score"]
+                    for _, detail in sample_data["players"].items()])
+    average_score = score_sum / total_players
+    max_score = max([detail["total_score"]
+                     for _, detail in sample_data["players"].items()])
+    top_performer = {
+        player: detail
+        for player, detail in sample_data["players"].items()
+        if detail["total_score"] == max_score
+    }
+    t_p_name,  = top_performer
+    t_p_score,  = top_performer[t_p_name]["total_score"],
+    t_p_achievement = top_performer[t_p_name]["achievements_count"]
+    print(f"Total players: {total_players}")
+    print(f"Total unique achievements: {total_uniq_achievement}")
+    print(f"Average score: {average_score:.1f}")
+    print(
+        f"Top performer: {t_p_name}",
+        f"({t_p_score} points, {t_p_achievement} achievements)"
+        )
 
 
 if __name__ == "__main__":
@@ -359,3 +395,4 @@ if __name__ == "__main__":
     list_comprehensions(sample_game_data)
     dict_comprehensions(sample_game_data)
     set_comprehensions(sample_game_data)
+    combined_analytics(sample_game_data)

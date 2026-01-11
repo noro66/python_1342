@@ -147,15 +147,21 @@ def dict_comprehensions(sample_data):
     }
     achievement_counts = {
         name: details["achievements_count"]
-        for name, details in sample_data["players"]
+        for name, details in sample_data["players"].items()
     }
     print(f"Player scores: {player_scores}")
     print(f"mode type played : {mode_types_played}")
     print(f"Achievement counts: {achievement_counts}")
+    print()
 
 
 def set_comprehensions(sample_data):
-    pass
+    print("=== Set Comprehension Examples ===")
+    uniq_players: set = {
+        session["player"]
+        for session in sample_data["sessions"]
+        }
+    print(f"Unique session players: {uniq_players}")
 
 
 if __name__ == "__main__":
@@ -163,3 +169,4 @@ if __name__ == "__main__":
     print()
     list_comprehensions(sample_game_data)
     dict_comprehensions(sample_game_data)
+    set_comprehensions(sample_game_data)

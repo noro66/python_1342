@@ -46,7 +46,7 @@ def game_events(count: int):
 if __name__ == "__main__":
     print("=== Game Data Stream Processor ===")
     print()
-    event_gen = game_events(-5)
+    event_gen = game_events(1000)
     if event_gen:
         event_counter = 1
         high_level_count = 0
@@ -77,7 +77,7 @@ if __name__ == "__main__":
             else:
                 pass
             event_counter += 1
-            timer += 0.000045
+            timer += 0.00045
 
         print()
 

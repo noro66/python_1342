@@ -13,6 +13,8 @@ def crisis_handler(filename):
         print(f"CRISIS ALERT: Attempting access to '{filename}'...")
         print("RESPONSE: Security protocols deny access")
         print("STATUS: Crisis handled, security maintained")
+    except Exception as e:
+        print(f"ERROR: Unexpected Error '{e}'")
 
 
 if __name__ == "__main__":

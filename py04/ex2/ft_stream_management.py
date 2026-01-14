@@ -15,8 +15,8 @@ def stream_manager():
               file=sys.stderr)
         print("[STANDARD] Data transmission complete")
         print("Three-channel communication test successful.")
-    except Exception:
-        print("ERROR: Unexpected Error Accrues")
+    except Exception as e:
+        print(f"ERROR: Unexpected Error Accrues {e}")
 
 
 if __name__ == "__main__":

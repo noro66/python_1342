@@ -23,11 +23,8 @@ def archive_creator():
     except PermissionError:
         print("ERROR: we can't initialize the new storage!, permission denied")
 
-    except IsADirectoryError:
-        print("ERROR: new_discovery.txt is actually a directory")
-
-    except OSError as e:
-        print(f"ERROR: {e}")
+    except Exception as e:
+        print(f"ERROR: Unexpected Error '{e}'")
 
     finally:
         if new_discovery:

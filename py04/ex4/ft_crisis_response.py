@@ -1,4 +1,4 @@
-def crisis_handler(filename):
+def crisis_handler(filename: str) -> None:
     try:
         with open(filename, "r") as file:
             content = file.read()

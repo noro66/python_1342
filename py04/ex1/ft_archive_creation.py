@@ -1,4 +1,4 @@
-def archive_creator():
+def archive_creator() -> None:
     print("=== CYBER ARCHIVES - PRESERVATION SYSTEM ===")
     new_discovery = None
     try:

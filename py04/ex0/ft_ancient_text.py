@@ -15,6 +15,9 @@ def archive_reader() -> None:
     except PermissionError:
         print("ERROR: Access denied to storage vault.")
 
+    except Exception:
+        print("ERROR: unexpected error accrued")
+
     finally:
         if file:
             file.close()

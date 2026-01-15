@@ -1,7 +1,7 @@
 import sys
 
 
-def stream_manager():
+def stream_manager() -> None:
     print("=== CYBER ARCHIVES - COMMUNICATION SYSTEM ===")
     print()
     try:
@@ -16,7 +16,7 @@ def stream_manager():
         print("[STANDARD] Data transmission complete")
         print("Three-channel communication test successful.")
     except Exception as e:
-        print(f"ERROR: Unexpected Error Accrues {e}")
+        print(f"ERROR: Unexpected Error Occurs {e}")
 
 
 if __name__ == "__main__":

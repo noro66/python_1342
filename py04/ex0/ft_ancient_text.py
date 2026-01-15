@@ -1,4 +1,4 @@
-def archive_reader():
+def archive_reader() -> None:
     print("=== CYBER ARCHIVES - DATA RECOVERY SYSTEM ===")
     file = None
     try:

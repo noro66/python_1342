@@ -104,23 +104,27 @@ if __name__ == "__main__":
     # Demo NumericProcessor
     print("Initializing Numeric Processor...")
     numeric = NumericProcessor()
-    data1 = [1, 2, 3, 4, 5]
+    data1 = [1, 2, 3, 4, None]
     print(f"Processing data: {data1}")
     if numeric.validate(data1):
         print("Validation: Numeric data verified")
-    result = numeric.process(data1)
-    print(numeric.format_output(result))
+        result = numeric.process(data1)
+        print(numeric.format_output(result))
+    else:
+        print("Validation: Numeric data is not valid")
     print()
 
     # Demo TextProcessor
     print("Initializing Text Processor...")
     text = TextProcessor()
-    data2 = "Hello Nexus World"
+    data2 = 13
     print(f"Processing data: \"{data2}\"")
     if text.validate(data2):
         print("Validation: Text data verified")
-    result = text.process(data2)
-    print(text.format_output(result))
+        result = text.process(data2)
+        print(text.format_output(result))
+    else:
+        print("Validation: Text data is not valid")
     print()
 
     # Demo LogProcessor
@@ -130,15 +134,17 @@ if __name__ == "__main__":
     print(f"Processing data: \"{data3}\"")
     if log.validate(data3):
         print("Validation: Log entry verified")
-    result = log.process(data3)
-    print(log.format_output(result))
+        result = log.process(data3)
+        print(log.format_output(result))
+    else:
+        print("Validation: Log data is not valid")
     print()
 
     # Polymorphic Demo
     print("=== Polymorphic Processing Demo ===")
     print("Processing multiple data types through same interface...")
     test_cases = [
-        (NumericProcessor(), [1, 2, 3]),
+        (NumericProcessor(), [1, 2, 3, None]),
         (TextProcessor(), "Hello World"),
         (LogProcessor(), "INFO: System ready")
     ]
@@ -149,6 +155,8 @@ if __name__ == "__main__":
             result = processor.process(data)
             formatted = processor.format_output(result)
             print(f"Result {result_num}: {formatted}")
+        else:
+            print(f"Result {result_num}: data is not valid")
         result_num += 1
 
     print()

@@ -11,11 +11,10 @@ class DataStream(ABC):
     def process_batch(self, data_batch: List[Any]) -> str:
         ...
 
-    @abstractmethod
     def get_stats(self) -> Dict[str, Union[str, int, float]]:
-        pass
+        return self.stats
 
     def filter_data(
         self, data_batch: List[Any], criteria: Optional[str] = None
     ) -> List[Any]:
-        ...
+        return data_batch

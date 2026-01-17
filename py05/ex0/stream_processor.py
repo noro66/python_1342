@@ -119,68 +119,68 @@ class LogProcessor(DataProcessor):
         return f"[INFO] {result}"
 
 
-if __name__ == "__main__":
-    print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===")
-    print()
-    # Demo NumericProcessor
-    print("Initializing Numeric Processor...")
-    numeric = NumericProcessor()
-    data1 = [1, 2, 3, 4]
-    print(f"Processing data: {data1}")
-    if numeric.validate(data1):
-        print("Validation: Numeric data verified")
-        result = numeric.process(data1)
-        print(numeric.format_output(result))
-    else:
-        print("Validation: Numeric data is not valid")
-    print()
+# if __name__ == "__main__":
+#     print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===")
+#     print()
+#     # Demo NumericProcessor
+#     print("Initializing Numeric Processor...")
+#     numeric = NumericProcessor()
+#     data1 = [1, 2, 3, 4]
+#     print(f"Processing data: {data1}")
+#     if numeric.validate(data1):
+#         print("Validation: Numeric data verified")
+#         result = numeric.process(data1)
+#         print(numeric.format_output(result))
+#     else:
+#         print("Validation: Numeric data is not valid")
+#     print()
 
-    # Demo TextProcessor
-    print("Initializing Text Processor...")
-    text = TextProcessor()
-    data2 = "Hello Nexus World"
-    print(f"Processing data: \"{data2}\"")
-    if text.validate(data2):
-        print("Validation: Text data verified")
-        result = text.process(data2)
-        print(text.format_output(result))
-    else:
-        print("Validation: Text data is not valid")
-    print()
+#     # Demo TextProcessor
+#     print("Initializing Text Processor...")
+#     text = TextProcessor()
+#     data2 = "Hello Nexus World"
+#     print(f"Processing data: \"{data2}\"")
+#     if text.validate(data2):
+#         print("Validation: Text data verified")
+#         result = text.process(data2)
+#         print(text.format_output(result))
+#     else:
+#         print("Validation: Text data is not valid")
+#     print()
 
-    # Demo LogProcessor
-    print("Initializing Log Processor...")
-    log = LogProcessor()
-    data3 = "ERROR: Connection timeout"
-    print(f"Processing data: \"{data3}\"")
-    if log.validate(data3):
-        print("Validation: Log entry verified")
-        result = log.process(data3)
-        print(log.format_output(result))
-    else:
-        print("Validation: Log data is not valid")
-    print()
+#     # Demo LogProcessor
+#     print("Initializing Log Processor...")
+#     log = LogProcessor()
+#     data3 = "ERROR: Connection timeout"
+#     print(f"Processing data: \"{data3}\"")
+#     if log.validate(data3):
+#         print("Validation: Log entry verified")
+#         result = log.process(data3)
+#         print(log.format_output(result))
+#     else:
+#         print("Validation: Log data is not valid")
+#     print()
 
-    # Polymorphic Demo
-    print("=== Polymorphic Processing Demo ===")
-    print("Processing multiple data types through same interface...")
-    test_cases = [
-        (NumericProcessor(), [1, 2, 3, None]),
-        (TextProcessor(), "Hello World"),
-        (LogProcessor(), "INFO: System ready")
-    ]
+#     # Polymorphic Demo
+#     print("=== Polymorphic Processing Demo ===")
+#     print("Processing multiple data types through same interface...")
+#     test_cases = [
+#         (NumericProcessor(), [1, 2, 3, None]),
+#         (TextProcessor(), "Hello World"),
+#         (LogProcessor(), "INFO: System ready")
+#     ]
 
-    result_num = 1
-    for processor, data in test_cases:
-        if processor.validate(data):
-            result = processor.process(data)
-            formatted = processor.format_output(result)
-            print(f"Result {result_num}: {formatted}")
-        else:
-            print(f"Result {result_num}: data is not valid")
-        result_num += 1
+#     result_num = 1
+#     for processor, data in test_cases:
+#         if processor.validate(data):
+#             result = processor.process(data)
+#             formatted = processor.format_output(result)
+#             print(f"Result {result_num}: {formatted}")
+#         else:
+#             print(f"Result {result_num}: data is not valid")
+#         result_num += 1
 
-    print()
-    print("data processed:", log.get_processed_data())
-    print()
-    print("Foundation systems online. Nexus ready for advanced streams.")
+#     print()
+#     print("data processed:", log.get_processed_data())
+#     print()
+#     print("Foundation systems online. Nexus ready for advanced streams.")

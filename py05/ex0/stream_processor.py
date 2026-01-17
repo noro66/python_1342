@@ -3,6 +3,18 @@ from typing import Any
 
 
 class DataProcessor(ABC):
+    processed_data = 0
+
+    def __init__(self) -> None:
+        if not DataProcessor.processed_data:
+            DataProcessor.processed_data = 1
+
+    def add_processed_data(self):
+        DataProcessor.processed_data += 1
+
+    def get_processed_data(self):
+        return DataProcessor.processed_data
+
     @abstractmethod
     def process(self, data: Any) -> str:
         pass
@@ -16,16 +28,20 @@ class DataProcessor(ABC):
 
 
 class NumericProcessor(DataProcessor):
+    def __init__(self) -> None:
+        super().__init__()
+
     def process(self, data: Any) -> str:
         if not self.validate(data):
             return ""
-        length, total, average = 0, 0, 0
+        length, total, average = 0, 0, 0.0
         for n in data:
             total += n
             length += 1
         if length == 0:
             return "0 numeric values, sum=0, avg=0"
         average = total / length
+        self.add_processed_data()
         return (
             f"{length} numeric values, " +
             f"sum={total}, avg={average:.1f}"
@@ -43,6 +59,8 @@ class NumericProcessor(DataProcessor):
 
 
 class TextProcessor(DataProcessor):
+    def __init__(self) -> None:
+        super().__init__()
 
     def process(self, data: Any) -> str:
         if not self.validate(data):
@@ -55,6 +73,7 @@ class TextProcessor(DataProcessor):
                 w_count += 1
                 is_space = False
             char_count += 1
+        self.add_processed_data()
         return f"text: {char_count} characters, {w_count} words"
 
     def validate(self, data: Any) -> bool:
@@ -74,9 +93,11 @@ class LogProcessor(DataProcessor):
             return ""
         if data[:6] == "ERROR:":
             message = data[7:]
+            self.add_processed_data()
             return f"ERROR level detected: {message}"
         elif data[:5] == "INFO:":
             message = data[6:]
+            self.add_processed_data()
             return f"INFO level detected: {message}"
         return ""
 
@@ -104,7 +125,7 @@ if __name__ == "__main__":
     # Demo NumericProcessor
     print("Initializing Numeric Processor...")
     numeric = NumericProcessor()
-    data1 = [1, 2, 3, 4, None]
+    data1 = [1, 2, 3, 4]
     print(f"Processing data: {data1}")
     if numeric.validate(data1):
         print("Validation: Numeric data verified")
@@ -117,7 +138,7 @@ if __name__ == "__main__":
     # Demo TextProcessor
     print("Initializing Text Processor...")
     text = TextProcessor()
-    data2 = 13
+    data2 = "Hello Nexus World"
     print(f"Processing data: \"{data2}\"")
     if text.validate(data2):
         print("Validation: Text data verified")
@@ -159,5 +180,7 @@ if __name__ == "__main__":
             print(f"Result {result_num}: data is not valid")
         result_num += 1
 
+    print()
+    print("data processed:", log.get_processed_data())
     print()
     print("Foundation systems online. Nexus ready for advanced streams.")

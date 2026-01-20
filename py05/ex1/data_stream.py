@@ -98,3 +98,36 @@ class TransactionStream(DataStream):
                     if dictionary.get("type", "") == criteria
                     ]
         return data_batch
+
+
+class EventStream(DataStream):
+    def __init__(self, stream_id: str) -> None:
+        super().__init__(stream_id)
+        self.stats["error_count"] = 0
+        self.stats["login_count"] = 0
+
+    def process_batch(self, data_batch: List[Any]) -> str:
+        try:
+            t_event = t_errors = 0
+            for event in data_batch:
+                t_event += 1
+                if event == "error":
+                    self.stats["error_count"] += 1
+                    t_errors += 1
+                elif event == "login":
+                    self.stats["login_count"] += 1
+            return (
+                f"Event analysis: {t_event}, {t_errors} error detected"
+            )
+        except Exception as e:
+            print("ERROR: ", e, file=sys.stderr)
+            return ""
+
+    def filter_data(self, data_batch: List[Any],
+                    criteria: str | None = None) -> List[Any]:
+        if criteria:
+            return [event
+                    for event in data_batch
+                    if event == criteria
+                    ]
+        return data_batch

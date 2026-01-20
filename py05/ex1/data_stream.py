@@ -18,3 +18,46 @@ class DataStream(ABC):
         self, data_batch: List[Any], criteria: Optional[str] = None
     ) -> List[Any]:
         return data_batch
+
+
+class SensorStream(DataStream):
+    def __init__(self, stream_id: str) -> None:
+        super().__init__(stream_id)
+        self.avg_temp = 0
+
+    def process_batch(self, data_batch: List[Any]) -> str:
+        total_temp = temp_val_count = r_process = 0
+        result = "Processing sensor batch: ["
+
+        for dictionary in data_batch:
+            r_process += 1
+            (key, value), = dictionary.items()
+            result += f"{key}:{value},"
+            if key == "temp":
+                total_temp += value
+                temp_val_count += 1
+
+        result = result.rstrip(",")
+        result += "]"
+
+        try:
+            self.avg_temp = total_temp / temp_val_count
+        except ZeroDivisionError as e:
+            print("ERROR: ", e)
+            return ""
+
+        self.stats["reading_process"] = r_process
+        self.stats["average_temp"] = self.avg_temp
+
+        return result
+
+    def filter_data(
+        self, data_batch: List[Any], criteria: Optional[str] = None
+    ) -> List[Any]:
+        if criteria:
+            return [
+                    dictionary
+                    for dictionary in data_batch
+                    if criteria in dictionary
+                    ]
+        return data_batch

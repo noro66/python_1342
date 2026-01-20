@@ -131,3 +131,16 @@ class EventStream(DataStream):
                     if event == criteria
                     ]
         return data_batch
+
+
+class StreamProcessor:
+
+    def process_stream(self, stream: DataStream, data: List[Any]) -> str:
+        return stream.process_batch(data)
+
+    def filter_stream(self, stream: DataStream,
+                      data: List[Any], criteria: str) -> List[Any]:
+        return stream.filter_data(data, criteria)
+
+    def get_stream_stats(self, stream: DataStream) -> Dict:
+        return stream.get_stats()

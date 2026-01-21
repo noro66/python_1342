@@ -210,96 +210,102 @@ class StreamProcessor:
 
 
 if __name__ == "__main__":
-    print("=== CODE NEXUS - POLYMORPHIC STREAM SYSTEM ===\n")
-    print("Initializing Sensor Stream...")
-    stream_processor = StreamProcessor()
-    stream_id = "SENSOR_001"
-    sensor_data = [{"temp": 22.5}, {"humidity": 65}, {"temp": 23.0}]
-    sensor_stream = SensorStream(stream_id)
-    process = stream_processor.process_stream(sensor_stream, sensor_data)
-    print(f"Stream ID: {stream_id}, Type: Environmental Data")
-    print(process)
-    sensor_stats = stream_processor.get_stream_stats(sensor_stream)
-    print(
-        f"Sensor analysis: {sensor_stats['ops']}",
-        f"readings processed, avg temp: {sensor_stats['average_temp']:.1f}°C"
-        )
-    print()
+    try:
+        print("=== CODE NEXUS - POLYMORPHIC STREAM SYSTEM ===\n")
+        print("Initializing Sensor Stream...")
+        stream_processor = StreamProcessor()
+        stream_id = "SENSOR_001"
+        sensor_data = [{"temp": 22.5}, {"humidity": 65}, {"temp": 23.0}]
+        sensor_stream = SensorStream(stream_id)
+        process = stream_processor.process_stream(sensor_stream, sensor_data)
+        print(f"Stream ID: {stream_id}, Type: Environmental Data")
+        print(process)
+        sensor_stats = stream_processor.get_stream_stats(sensor_stream)
+        print(
+            f"Sensor analysis: {sensor_stats['ops']}",
+            "readings processed, avg temp:",
+            f"{sensor_stats['average_temp']:.1f}°C"
+            )
+        print()
 
-    print("Initializing Transaction Stream...")
-    stream_processor = StreamProcessor()
-    stream_id = "TRANS_001"
-    transaction_data = [{"type": "buy", "amount": 100},
-                        {"type": "buy", "amount": 10},
-                        {"type": "sell", "amount": 100},
-                        {"type": "buy", "amount": 10},
-                        {"type": "sell", "amount": 100},
-                        {"type": "buy", "amount": 10},]
-    transaction_stream = TransactionStream(stream_id)
-    process = stream_processor.process_stream(transaction_stream,
-                                              transaction_data)
-    print(f"Stream ID: {stream_id}, Type:  Financial Data")
-    print(process)
-    transaction_stats = stream_processor.get_stream_stats(transaction_stream)
-    print(
-        f"Transaction analysis: {transaction_stats['ops']} operations,",
-        f"net flow: {transaction_stats['net_flow']} units"
-        )
-    print()
+        print("Initializing Transaction Stream...")
+        stream_processor = StreamProcessor()
+        stream_id = "TRANS_001"
+        transaction_data = [{"type": "buy", "amount": 100},
+                            {"type": "buy", "amount": 10},
+                            {"type": "sell", "amount": 100},
+                            {"type": "buy", "amount": 10},
+                            {"type": "sell", "amount": 100},
+                            {"type": "buy", "amount": 10},]
+        transaction_stream = TransactionStream(stream_id)
+        process = stream_processor.process_stream(transaction_stream,
+                                                  transaction_data)
+        print(f"Stream ID: {stream_id}, Type:  Financial Data")
+        print(process)
+        transaction_stats = stream_processor.get_stream_stats(
+            transaction_stream
+            )
+        print(
+            f"Transaction analysis: {transaction_stats['ops']} operations,",
+            f"net flow: {transaction_stats['net_flow']} units"
+            )
+        print()
 
-    print("Initializing Event Stream...")
-    stream_processor = StreamProcessor()
-    stream_id = "EVENT_001"
-    event_data = ["login", "error", "logout"]
-    event_stream = EventStream(stream_id)
-    process = stream_processor.process_stream(event_stream, event_data)
-    print(f"Stream ID: {stream_id}, Type: System Events")
-    print(process)
-    event_stats = stream_processor.get_stream_stats(event_stream)
-    print(
-        f"Event analysis: {event_stats['ops']} events,",
-        f"{event_stats['error_count']} error detected"
-        )
-    print()
-    print("=== Polymorphic Stream Processing ===")
-    print("Processing mixed stream types through unified interface...")
-    test_cases = [
-     ("Sensor data", SensorStream("SENSOR_002"),
-      [{"temp": 25.0}, {"humidity": 70}, {"temp": 34.4}],
-      "readings processed"
-      ),
-     ("Transaction data",
-      TransactionStream("SENSOR_002"),
-      [
-        {"type": "buy", "amount": 200},
-        {"type": "sell", "amount": 50},
-        {"type": "buy", "amount": 103},
-        {"type": "sell", "amount": 30}
-        ], "operations processed"
-      ),
-     (
-      "Event data", EventStream("EVENT_002"),
-      ["login", "error", "logout"],
-      "events processed"
-      ),
-    ]
-    print()
-    for stream_data in test_cases:
-        res = stream_processor.process_stream(stream_data[1], stream_data[2])
-        stats = stream_processor.get_stream_stats(stream_data[1])
-        if res:
+        print("Initializing Event Stream...")
+        stream_processor = StreamProcessor()
+        stream_id = "EVENT_001"
+        event_data = ["login", "error", "logout"]
+        event_stream = EventStream(stream_id)
+        process = stream_processor.process_stream(event_stream, event_data)
+        print(f"Stream ID: {stream_id}, Type: System Events")
+        print(process)
+        event_stats = stream_processor.get_stream_stats(event_stream)
+        print(
+            f"Event analysis: {event_stats['ops']} events,",
+            f"{event_stats['error_count']} error detected"
+            )
+        print()
+        print("=== Polymorphic Stream Processing ===")
+        print("Processing mixed stream types through unified interface...")
+        test_cases = [
+         ("Sensor data", SensorStream("SENSOR_002"),
+          [{"temp": 25.0}, {"humidity": 70}, {"temp": 34.4}],
+          "readings processed"
+          ),
+         ("Transaction data",
+          TransactionStream("SENSOR_002"),
+          [
+            {"type": "buy", "amount": 200},
+            {"type": "sell", "amount": 50},
+            {"type": "buy", "amount": 103},
+            {"type": "sell", "amount": 30}
+            ], "operations processed"
+          ),
+         (
+          "Event data", EventStream("EVENT_002"),
+          ["login", "error", "logout"],
+          "events processed"
+          ),
+        ]
+        print()
+        for stream_data in test_cases:
+            res = stream_processor.process_stream(stream_data[1],
+                                                  stream_data[2])
+            stats = stream_processor.get_stream_stats(stream_data[1])
             print(
-                f"- {stream_data[0]}: {stats.get('ops', 0)} {stream_data[-1]}"
-                )
-    print()
-    print("Stream filtering active: High-priority data only")
-    sensor_stream = SensorStream("ENSOR_00")
-    trans_stream = TransactionStream("TRANS_00")
-    filter_sens_res = sensor_stream.filter_data(test_cases[0][2], "temp")
-    filter_trans_res = trans_stream.filter_data(test_cases[1][2], "buy")
-    len_sensor = len(filter_sens_res)
-    len_trans = len(filter_trans_res)
-    print(f"Filtered results: {len_sensor}",
-          f"critical sensor alerts, {len_trans} large transaction")
-    print()
-    print("All streams processed successfully. Nexus throughput optimal.")
+                 f"- {stream_data[0]}: {stats.get('ops', 0)} {stream_data[-1]}"
+                 )
+        print()
+        print("Stream filtering active: High-priority data only")
+        sensor_stream = SensorStream("ENSOR_00")
+        trans_stream = TransactionStream("TRANS_00")
+        filter_sens_res = sensor_stream.filter_data(test_cases[0][2], "temp")
+        filter_trans_res = trans_stream.filter_data(test_cases[1][2], "buy")
+        len_sensor = len(filter_sens_res)
+        len_trans = len(filter_trans_res)
+        print(f"Filtered results: {len_sensor}",
+              f"critical sensor alerts, {len_trans} large transaction")
+        print()
+        print("All streams processed successfully. Nexus throughput optimal.")
+    except Exception as e:
+        print("ERROR:", e)

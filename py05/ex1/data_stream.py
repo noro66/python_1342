@@ -72,6 +72,7 @@ class SensorStream(DataStream):
                 dictionary
                 for dictionary in data_batch
                 if criteria in dictionary
+                and isinstance(dictionary.get(criteria), (int, float))
                 and ((criteria == "temp" and dictionary["temp"] > 19)
                      or (criteria == "humidity"
                      and dictionary["humidity"] > 59)
@@ -121,13 +122,18 @@ class TransactionStream(DataStream):
 
     def filter_data(self, data_batch: List[Any], criteria: str
                     | None = None) -> List[Any]:
-        if criteria:
-            return [dictionary
-                    for dictionary in data_batch
-                    if (dictionary.get("type", "") == criteria
-                        and dictionary.get("amount", 0) > 125)
-                    ]
-        return data_batch
+        if not data_batch or not isinstance(data_batch, list):
+            return []
+
+        if not criteria:
+            return data_batch
+
+        return [dictionary
+                for dictionary in data_batch
+                if isinstance(dictionary, dict)
+                and (dictionary.get("type", "") == criteria
+                     and dictionary.get("amount", 0) > 125)
+                ]
 
 
 class EventStream(DataStream):
@@ -137,11 +143,15 @@ class EventStream(DataStream):
         self.stats["error_count"] = 0
 
     def process_batch(self, data_batch: List[Any]) -> str:
+        if not data_batch or not isinstance(data_batch, list):
+            return ""
         try:
             t_event = t_errors = 0
             result = "Processing event batch ["
             not_first = True
             for event in data_batch:
+                if not isinstance(event, str):
+                    continue
                 t_event += 1
 
                 if not not_first:
@@ -165,12 +175,16 @@ class EventStream(DataStream):
 
     def filter_data(self, data_batch: List[Any],
                     criteria: str | None = None) -> List[Any]:
-        if criteria:
-            return [event
-                    for event in data_batch
-                    if event == criteria
-                    ]
-        return data_batch
+        if not data_batch or not isinstance(data_batch, list):
+            return []
+
+        if not criteria:
+            return data_batch
+
+        return [event
+                for event in data_batch
+                if isinstance(event, str) and event == criteria
+                ]
 
 
 class StreamProcessor:

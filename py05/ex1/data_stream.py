@@ -27,28 +27,31 @@ class SensorStream(DataStream):
         self.avg_temp = 0
 
     def process_batch(self, data_batch: List[Any]) -> str:
+        if not data_batch or not isinstance(data_batch, list):
+            return ""
+
         total_temp = temp_val_count = r_process = 0
         result = "Processing sensor batch: ["
 
-        not_first = True
         for dictionary in data_batch:
+            if not isinstance(dictionary, dict):
+                continue
             r_process += 1
-            (key, value), = dictionary.items()
-            if not not_first:
-                result += " "
-            not_first = False
-            result += f"{key}:{value},"
-            if key == "temp":
-                total_temp += value
-                temp_val_count += 1
+            for key, value in dictionary.items():
+                if key == "temp" and not isinstance(value, (int, float)):
+                    continue
+                result += f"{key}:{value}, "
+                if key == "temp":
+                    total_temp += value
+                    temp_val_count += 1
 
-        result = result.rstrip(",")
+        result = result.rstrip(" ,")
         result += "]"
-
         try:
             self.avg_temp = total_temp / temp_val_count
         except ZeroDivisionError as e:
             print("ERROR: ", e, file=sys.stderr)
+            self.stats = {}
             return ""
 
         self.stats["ops"] = r_process

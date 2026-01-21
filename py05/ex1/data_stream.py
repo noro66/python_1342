@@ -51,7 +51,7 @@ class SensorStream(DataStream):
             print("ERROR: ", e, file=sys.stderr)
             return ""
 
-        self.stats["reading_process"] = r_process
+        self.stats["ops"] = r_process
         self.stats["average_temp"] = self.avg_temp
 
         return result
@@ -64,6 +64,10 @@ class SensorStream(DataStream):
                     dictionary
                     for dictionary in data_batch
                     if criteria in dictionary
+                    and ((criteria == "temp" and dictionary["temp"] > 19)
+                         or (criteria == "humidity"
+                         and dictionary["humidity"] > 59)
+                         )
                     ]
         return data_batch
 
@@ -111,7 +115,8 @@ class TransactionStream(DataStream):
         if criteria:
             return [dictionary
                     for dictionary in data_batch
-                    if dictionary.get("type", "") == criteria
+                    if (dictionary.get("type", "") == criteria
+                        and dictionary.get("amount", 0) > 125)
                     ]
         return data_batch
 
@@ -119,7 +124,7 @@ class TransactionStream(DataStream):
 class EventStream(DataStream):
     def __init__(self, stream_id: str) -> None:
         super().__init__(stream_id)
-        self.stats["total_events"] = 0
+        self.stats["ops"] = 0
         self.stats["error_count"] = 0
 
     def process_batch(self, data_batch: List[Any]) -> str:
@@ -142,7 +147,7 @@ class EventStream(DataStream):
 
             result = result.rstrip(",")
             result += "]"
-            self.stats["total_events"] = t_event
+            self.stats["ops"] = t_event
             self.stats["error_count"] = t_errors
             return result
         except Exception as e:
@@ -184,7 +189,7 @@ if __name__ == "__main__":
     print(process)
     sensor_stats = stream_processor.get_stream_stats(sensor_stream)
     print(
-        f"Sensor analysis: {sensor_stats['reading_process']}",
+        f"Sensor analysis: {sensor_stats['ops']}",
         f"readings processed, avg temp: {sensor_stats['average_temp']:.1f}°C"
         )
     print()
@@ -220,7 +225,49 @@ if __name__ == "__main__":
     print(process)
     event_stats = stream_processor.get_stream_stats(event_stream)
     print(
-        f"Event analysis: {event_stats['total_events']} events,",
+        f"Event analysis: {event_stats['ops']} events,",
         f"{event_stats['error_count']} error detected"
         )
     print()
+    print("=== Polymorphic Stream Processing ===")
+    print("Processing mixed stream types through unified interface...")
+    test_cases = [
+     ("Sensor data", SensorStream("SENSOR_002"),
+      [{"temp": 25.0}, {"humidity": 70}, {"temp": 34.4}],
+      "readings processed"
+      ),
+     ("Transaction data",
+      TransactionStream("SENSOR_002"),
+      [
+        {"type": "buy", "amount": 200},
+        {"type": "sell", "amount": 50},
+        {"type": "buy", "amount": 103},
+        {"type": "sell", "amount": 30}
+        ], "operations processed"
+      ),
+     (
+      "Event data", EventStream("EVENT_002"),
+      ["login", "error", "logout"],
+      "events processed"
+      ),
+    ]
+    print()
+    for stream_data in test_cases:
+        res = stream_processor.process_stream(stream_data[1], stream_data[2])
+        stats = stream_processor.get_stream_stats(stream_data[1])
+        if res:
+            print(
+                f"- {stream_data[0]}: {stats.get('ops', 0)} {stream_data[-1]}"
+                )
+    print()
+    print("Stream filtering active: High-priority data only")
+    sensor_stream = SensorStream("ENSOR_00")
+    trans_stream = TransactionStream("TRANS_00")
+    filter_sens_res = sensor_stream.filter_data(test_cases[0][2], "temp")
+    filter_trans_res = trans_stream.filter_data(test_cases[1][2], "buy")
+    len_sensor = len(filter_sens_res)
+    len_trans = len(filter_trans_res)
+    print(f"Filtered results: {len_sensor}",
+          f"critical sensor alerts, {len_trans} large transaction")
+    print()
+    print("All streams processed successfully. Nexus throughput optimal.")

@@ -190,13 +190,22 @@ class EventStream(DataStream):
 class StreamProcessor:
 
     def process_stream(self, stream: DataStream, data: List[Any]) -> str:
+        if not isinstance(stream, DataStream):
+            return ""
+
         return stream.process_batch(data)
 
     def filter_stream(self, stream: DataStream,
                       data: List[Any], criteria: str) -> List[Any]:
+        if not isinstance(stream, DataStream):
+            return []
+
         return stream.filter_data(data, criteria)
 
     def get_stream_stats(self, stream: DataStream) -> Dict:
+        if not isinstance(stream, DataStream):
+            return {}
+
         return stream.get_stats()
 
 

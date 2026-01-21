@@ -86,29 +86,31 @@ class TransactionStream(DataStream):
         self.stats["net_flow"] = 0
 
     def process_batch(self, data_batch: List[Any]) -> str:
+        if not data_batch or not isinstance(data_batch, list):
+            return ""
         try:
             t_ops = net_flow = 0
             result = "Processing transaction batch: ["
-            not_first = True
 
             for dictionary in data_batch:
+                if not isinstance(dictionary, dict):
+                    continue
                 t_ops += 1
                 type_value = dictionary.get("type", "")
                 amount_value = dictionary.get("amount", 0)
-
-                if not not_first:
-                    result += " "
-                not_first = False
-
-                result += f"{type_value}:{amount_value},"
+                if not isinstance(type_value, str) \
+                        or not isinstance(amount_value, (int, float)):
+                    continue
 
                 if type_value == "buy":
+                    result += f"{type_value}:{amount_value}, "
                     net_flow += amount_value
 
                 elif type_value == "sell":
+                    result += f"{type_value}:{amount_value}, "
                     net_flow -= amount_value
 
-            result = result.rstrip(",")
+            result = result.rstrip(", ")
             result += "]"
             self.stats["ops"] = t_ops
             self.stats["net_flow"] = net_flow

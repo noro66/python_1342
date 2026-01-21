@@ -62,17 +62,21 @@ class SensorStream(DataStream):
     def filter_data(
         self, data_batch: List[Any], criteria: Optional[str] = None
     ) -> List[Any]:
-        if criteria:
-            return [
-                    dictionary
-                    for dictionary in data_batch
-                    if criteria in dictionary
-                    and ((criteria == "temp" and dictionary["temp"] > 19)
-                         or (criteria == "humidity"
-                         and dictionary["humidity"] > 59)
-                         )
+        if not data_batch or not isinstance(data_batch, list):
+            return []
+
+        if not criteria:
+            return data_batch
+
+        return [
+                dictionary
+                for dictionary in data_batch
+                if criteria in dictionary
+                and ((criteria == "temp" and dictionary["temp"] > 19)
+                     or (criteria == "humidity"
+                     and dictionary["humidity"] > 59)
+                     )
                     ]
-        return data_batch
 
 
 class TransactionStream(DataStream):

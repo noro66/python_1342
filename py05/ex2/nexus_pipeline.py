@@ -99,7 +99,7 @@ class StreamAdapter(ProcessingPipeline):
 
 class NexusManager:
     def __init__(self) -> None:
-        self.pipelines = []
+        self.pipelines: List[ProcessingPipeline] = []
 
     def add_pipeline(
         self, pipeline: ProcessingPipeline

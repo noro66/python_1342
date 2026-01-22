@@ -1,12 +1,12 @@
 import sys
 from abc import ABC, abstractmethod
-from typing import List, Any, Optional, Dict, Union
+from typing import List, Any, Optional, Dict, Union, Tuple
 
 
 class DataStream(ABC):
     def __init__(self, stream_id: str) -> None:
         self.stream_id = stream_id
-        self.stats = {}
+        self.stats: Dict[str, Union[str, int, float]] = {}
 
     @abstractmethod
     def process_batch(self, data_batch: List[Any]) -> str:
@@ -24,7 +24,7 @@ class DataStream(ABC):
 class SensorStream(DataStream):
     def __init__(self, stream_id: str) -> None:
         super().__init__(stream_id)
-        self.avg_temp = 0
+        self.avg_temp = 0.0
 
     def process_batch(self, data_batch: List[Any]) -> str:
         if not data_batch or not isinstance(data_batch, list):
@@ -90,7 +90,7 @@ class TransactionStream(DataStream):
         if not data_batch or not isinstance(data_batch, list):
             return ""
         try:
-            t_ops = net_flow = 0
+            t_ops = net_flow = 0.0
             result = "Processing transaction batch: ["
 
             for dictionary in data_batch:
@@ -161,7 +161,6 @@ class EventStream(DataStream):
                 result += f"{event},"
 
                 if event == "error":
-                    self.stats["error_count"] += 1
                     t_errors += 1
 
             result = result.rstrip(",")
@@ -267,7 +266,7 @@ if __name__ == "__main__":
         print()
         print("=== Polymorphic Stream Processing ===")
         print("Processing mixed stream types through unified interface...")
-        test_cases = [
+        test_cases: List[Tuple[str, DataStream, list, str]] = [
          ("Sensor data", SensorStream("SENSOR_002"),
           [{"temp": 25.0}, {"humidity": 70}, {"temp": 34.4}],
           "readings processed"

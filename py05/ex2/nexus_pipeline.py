@@ -28,3 +28,14 @@ class OutputStage:
         return str(data)
 
 
+class ProcessingPipeline(ABC):
+    def __init__(self, pipeline_id: str) -> None:
+        self.stages: List[ProcessingStage] = []
+        self.pipeline_id = pipeline_id
+
+    def add_stage(self, stage: ProcessingStage) -> None:
+        self.stages.append(stage)
+
+    @abstractmethod
+    def process(self, data: Any) -> Union[str, Any]:
+        ...

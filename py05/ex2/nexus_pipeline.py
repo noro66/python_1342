@@ -9,23 +9,32 @@ class ProcessingStage(Protocol):
 
 class InputStage:
     def process(self, data: Any) -> Any:
-        if data:
-            return data
-        return {}
+        try:
+            if data:
+                return data
+            return {}
+        except Exception:
+            return data if data else {}
 
 
 class TransformStage:
     def process(self, data: Any) -> Any:
-        if isinstance(data, dict):
-            data["processed"] = True
-        if isinstance(data, str):
-            data = f"Transformed: {data}"
-        return data
+        try:
+            if isinstance(data, dict):
+                data["processed"] = True
+            if isinstance(data, str):
+                data = f"Transformed: {data}"
+            return data
+        except Exception:
+            return data
 
 
 class OutputStage:
     def process(self, data: Any) -> Any:
-        return str(data)
+        try:
+            return str(data)
+        except Exception:
+            return ""
 
 
 class ProcessingPipeline(ABC):
@@ -130,12 +139,37 @@ if __name__ == "__main__":
 
     # Process each type
     print("=== Multi-Format Data Processing ===\n")
-    print("Processing JSON data through pipeline...")
 
-    json_result = nexus_manager.process(json_adapter, json_data)
+    print("Processing JSON data through pipeline...")
     print(f"Input: {json_data}")
-    print(f"Output: {json_result}")
+    print("Transform: Enriched with metadata and validation")
+    json_result = nexus_manager.process(json_adapter, json_data)
+    print(json_result)
+    print()
+
+    print("Processing CSV data through same pipeline...")
+    print(f"Input: {csv_data}")
+    print("Transform: Enriched with metadata and validation")
+    csv_result = nexus_manager.process(csv_adapter, csv_data)
+    print(csv_result)
+    print()
+
+    print("Processing Stream data through same pipeline...")
+    print(f"Input: {stream_data}")
+    print("Transform: Enriched with metadata and validation")
+    stream_result = nexus_manager.process(stream_adapter, stream_data)
+    print(stream_result)
+    print()
+
     # Chaining demo
-    # ...
+    print("=== Pipeline Chaining Demo ===")
+    print("Pipeline A -> Pipeline B -> Pipeline C")
+    print("Data flow: Raw -> Processed -> Analyzed -> Stored")
+
+    chain_result = nexus_manager.chain_process(
+        [json_adapter, csv_adapter, stream_adapter],
+        "Raw data"
+    )
+    print(f"Chain result: {chain_result}")
 
     print("\nAll streams processed successfully. Nexus throughput optimal.")

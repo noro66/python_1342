@@ -43,13 +43,18 @@ class ProcessingPipeline(ABC):
         self.pipeline_id = pipeline_id
 
     def add_stage(self, stage: ProcessingStage) -> None:
-        self.stages.append(stage)
+        if hasattr(stage, 'process') and callable(getattr(stage, 'process')):
+            self.stages.append(stage)
 
     def process_helper(self, data: Any) -> Any:
-        result = data
-        for stage in self.stages:
-            result = stage.process(result)
-        return result
+        try:
+            result = data
+            for stage in self.stages:
+                result = stage.process(result)
+            return result
+        except Exception as e:
+            print("ERROR: ", e)
+            return data
 
     @abstractmethod
     def process(self, data: Any) -> Union[str, Any]:
@@ -61,8 +66,11 @@ class JSONAdapter(ProcessingPipeline):
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Union[str, Any]:
-        result = self.process_helper(data)
-        return f"JSON Output: {result}"
+        try:
+            result = self.process_helper(data)
+            return f"JSON Output: {result}"
+        except Exception:
+            return "JSON Output: Error processing data"
 
 
 class CSVAdapter(ProcessingPipeline):
@@ -70,8 +78,11 @@ class CSVAdapter(ProcessingPipeline):
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Union[str, Any]:
-        result = self.process_helper(data)
-        return f"CSV Output: {result}"
+        try:
+            result = self.process_helper(data)
+            return f"CSV Output: {result}"
+        except Exception:
+            return "CSV Output: Error processing data"
 
 
 class StreamAdapter(ProcessingPipeline):
@@ -79,8 +90,11 @@ class StreamAdapter(ProcessingPipeline):
         super().__init__(pipeline_id)
 
     def process(self, data: Any) -> Union[str, Any]:
-        result = self.process_helper(data)
-        return f"Stream Output: {result}"
+        try:
+            result = self.process_helper(data)
+            return f"Stream Output: {result}"
+        except Exception:
+            return "Stream Output: Error processing data"
 
 
 class NexusManager:
@@ -90,20 +104,35 @@ class NexusManager:
     def add_pipeline(
         self, pipeline: ProcessingPipeline
     ) -> None:
-        self.pipelines.append(pipeline)
+        if not pipeline or not isinstance(pipeline, ProcessingPipeline):
+            return
+        if not hasattr(pipeline, 'process'):
+            return
+        if callable(getattr(pipeline, 'process')):
+            self.pipelines.append(pipeline)
 
     def process(
         self, pipeline: ProcessingPipeline, data: Any
     ) -> str:
-        return pipeline.process(data)
+        try:
+            return pipeline.process(data)
+        except Exception as e:
+            print("ERROR: ", e)
+            return ""
 
     def chain_process(
         self, pipelines: List[ProcessingPipeline], data: Any
     ) -> str:
+        if not pipelines:
+            return data
         res = data
-        for pip in pipelines:
-            res = self.process(pip, res)
-        return res
+        try:
+            for pip in pipelines:
+                res = self.process(pip, res)
+            return res
+        except Exception as e:
+            print("ERROR:", e)
+            return ""
 
 
 def stage_adder(adapter: ProcessingPipeline):

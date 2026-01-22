@@ -36,6 +36,39 @@ class ProcessingPipeline(ABC):
     def add_stage(self, stage: ProcessingStage) -> None:
         self.stages.append(stage)
 
+    def process_helper(self, data: Any) -> Any:
+        result = data
+        for stage in self.stages:
+            result = stage.process(result)
+        return result
+
     @abstractmethod
     def process(self, data: Any) -> Union[str, Any]:
         ...
+
+
+class JSONAdapter(ProcessingPipeline):
+    def __init__(self, pipeline_id: str) -> None:
+        super().__init__(pipeline_id)
+
+    def process(self, data: Any) -> Union[str, Any]:
+        result = self.process_helper(data)
+        return f"JSON Output: {result}"
+
+
+class CSVAdapter(ProcessingPipeline):
+    def __init__(self, pipeline_id: str) -> None:
+        super().__init__(pipeline_id)
+
+    def process(self, data: Any) -> Union[str, Any]:
+        result = self.process_helper(data)
+        return f"CSV Output: {result}"
+
+
+class StreamAdapter(ProcessingPipeline):
+    def __init__(self, pipeline_id: str) -> None:
+        super().__init__(pipeline_id)
+
+    def process(self, data: Any) -> Union[str, Any]:
+        result = self.process_helper(data)
+        return f"Stream Output: {result}"

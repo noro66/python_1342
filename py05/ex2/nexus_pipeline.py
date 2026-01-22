@@ -1,4 +1,4 @@
-from typing import Any, Protocol, List, Dict, Union, Optional
+from typing import Any, Protocol, List, Union
 from abc import ABC, abstractmethod
 
 
@@ -95,3 +95,17 @@ class NexusManager:
         for pip in pipelines:
             res = self.process(pip, res)
         return res
+
+
+def stage_adder(adapter: ProcessingPipeline):
+    stages = (InputStage(), TransformStage(), OutputStage())
+    for stage in stages:
+        adapter.add_stage(stage)
+
+
+if __name__ == "__main__":
+    nexus_manager = NexusManager()
+    json_adapter, csv_adapter, stream_adapter = \
+        (JSONAdapter("ada_01"), CSVAdapter("ada_02"), StreamAdapter("ada_03"))
+    for adapter in (json_adapter, csv_adapter, stream_adapter):
+        stage_adder(adapter)

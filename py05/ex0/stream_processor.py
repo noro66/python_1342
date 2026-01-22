@@ -24,6 +24,8 @@ class DataProcessor(ABC):
         pass
 
     def format_output(self, result: str) -> str:
+        if not result or not isinstance(result, str):
+            return ""
         return f"Output: Processed {result}"
 
 
@@ -32,20 +34,24 @@ class NumericProcessor(DataProcessor):
         super().__init__()
 
     def process(self, data: Any) -> str:
-        if not self.validate(data):
+        try:
+            if not data or not self.validate(data):
+                return ""
+            length, total, average = 0, 0, 0.0
+            for n in data:
+                total += n
+                length += 1
+            if length == 0:
+                return "0 numeric values, sum=0, avg=0"
+            average = total / length
+            self.add_processed_data()
+            return (
+                f"{length} numeric values, " +
+                f"sum={total}, avg={average:.1f}"
+                )
+        except Exception as e:
+            print("ERROR:", e)
             return ""
-        length, total, average = 0, 0, 0.0
-        for n in data:
-            total += n
-            length += 1
-        if length == 0:
-            return "0 numeric values, sum=0, avg=0"
-        average = total / length
-        self.add_processed_data()
-        return (
-            f"{length} numeric values, " +
-            f"sum={total}, avg={average:.1f}"
-            )
 
     def validate(self, data: Any) -> bool:
         try:
@@ -63,18 +69,22 @@ class TextProcessor(DataProcessor):
         super().__init__()
 
     def process(self, data: Any) -> str:
-        if not self.validate(data):
+        try:
+            if not data or not self.validate(data):
+                return ""
+            is_space, w_count, char_count = True, 0, 0
+            for c in data:
+                if c == " ":
+                    is_space = True
+                if c != " " and is_space:
+                    w_count += 1
+                    is_space = False
+                char_count += 1
+            self.add_processed_data()
+            return f"text: {char_count} characters, {w_count} words"
+        except Exception as e:
+            print("ERROR:", e)
             return ""
-        is_space, w_count, char_count = True, 0, 0
-        for c in data:
-            if c == " ":
-                is_space = True
-            if c != " " and is_space:
-                w_count += 1
-                is_space = False
-            char_count += 1
-        self.add_processed_data()
-        return f"text: {char_count} characters, {w_count} words"
 
     def validate(self, data: Any) -> bool:
         try:
@@ -92,21 +102,25 @@ class LogProcessor(DataProcessor):
         super().__init__()
 
     def process(self, data: Any) -> str:
-        if not self.validate(data):
+        try:
+            if not data or not self.validate(data):
+                return ""
+            if data[:6] == "ERROR:":
+                message = data[7:]
+                self.add_processed_data()
+                return f"ERROR level detected: {message}"
+            elif data[:5] == "INFO:":
+                message = data[6:]
+                self.add_processed_data()
+                return f"INFO level detected: {message}"
             return ""
-        if data[:6] == "ERROR:":
-            message = data[7:]
-            self.add_processed_data()
-            return f"ERROR level detected: {message}"
-        elif data[:5] == "INFO:":
-            message = data[6:]
-            self.add_processed_data()
-            return f"INFO level detected: {message}"
-        return ""
+        except Exception as e:
+            print("ERROR:", e)
+            return ""
 
     def validate(self, data: Any) -> bool:
         try:
-            if not (data[0:6] == "ERROR:" or data[0:5] == "INFO:"):
+            if not data or not (data[0:6] == "ERROR:" or data[0:5] == "INFO:"):
                 return False
             count = 0
             for c in data:
@@ -117,6 +131,8 @@ class LogProcessor(DataProcessor):
             return False
 
     def format_output(self, result: str) -> str:
+        if not result or not isinstance(result, str):
+            return ""
         if result[0:5] == "ERROR":
             return f"[ALERT] {result}"
         return f"[INFO] {result}"

@@ -72,3 +72,26 @@ class StreamAdapter(ProcessingPipeline):
     def process(self, data: Any) -> Union[str, Any]:
         result = self.process_helper(data)
         return f"Stream Output: {result}"
+
+
+class NexusManager:
+    def __init__(self) -> None:
+        self.pipelines = []
+
+    def add_pipeline(
+        self, pipeline: ProcessingPipeline
+    ) -> None:
+        self.pipelines.append(pipeline)
+
+    def process(
+        self, pipeline: ProcessingPipeline, data: Any
+    ) -> str:
+        return pipeline.process(data)
+
+    def chain_process(
+        self, pipelines: List[ProcessingPipeline], data: Any
+    ) -> str:
+        res = data
+        for pip in pipelines:
+            res = self.process(pip, res)
+        return res

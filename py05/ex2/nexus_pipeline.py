@@ -214,12 +214,6 @@ if __name__ == "__main__":
 
         result = nexus_manager.process(bad_pipeline, {"test": "data"})
 
-        if "Error" in result or result == str({"test": "data"}):
-            print("Error detected in Stage 2: Invalid data format")
-            print("Recovery initiated: Switching to backup processor")
-            result = nexus_manager.process(json_adapter, {"test": "data"})
-            print("Recovery successful: Pipeline restored, processing resumed")
-
         print(
             "\nAll streams processed successfully. Nexus throughput optimal."
             )

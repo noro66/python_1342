@@ -1,6 +1,5 @@
-from typing import Any, Protocol, List, Union, Dict
+from typing import Any, Protocol, List, Union
 from abc import ABC, abstractmethod
-from collections import Counter
 
 
 class ProcessingStage(Protocol):
@@ -107,10 +106,7 @@ class NexusManager:
     ) -> None:
         if not pipeline or not isinstance(pipeline, ProcessingPipeline):
             return
-        if not hasattr(pipeline, 'process'):
-            return
-        if callable(getattr(pipeline, 'process')):
-            self.pipelines.append(pipeline)
+        self.pipelines.append(pipeline)
 
     def process(
         self, pipeline: ProcessingPipeline, data: Any
@@ -121,18 +117,14 @@ class NexusManager:
             print("ERROR: ", e)
             return ""
 
-    def get_pipeline_stats(self) -> Dict[str, int]:
-        types = [type(p).__name__ for p in self.pipelines]
-        return dict(Counter(types))
-
     def chain_process(
-        self, pipelines: List[ProcessingPipeline], data: Any
+        self, data: Any
     ) -> str:
-        if not pipelines:
+        if not self.pipelines:
             return data
         res = data
         try:
-            for pip in pipelines:
+            for pip in self.pipelines:
                 res = self.process(pip, res)
             return res
         except Exception as e:
@@ -152,77 +144,84 @@ def stage_adder(adapter: ProcessingPipeline):
 
 
 if __name__ == "__main__":
-    print("=== CODE NEXUS - ENTERPRISE PIPELINE SYSTEM ===\n")
-    print("Initializing Nexus Manager...")
-    print("Pipeline capacity: 1000 streams/second\n")
-    print("Creating Data Processing Pipeline...")
+    try:
+        print("=== CODE NEXUS - ENTERPRISE PIPELINE SYSTEM ===\n")
+        print("Initializing Nexus Manager...")
+        print("Pipeline capacity: 1000 streams/second\n")
+        print("Creating Data Processing Pipeline...")
 
-    nexus_manager = NexusManager()
-    json_adapter, csv_adapter, stream_adapter = \
-        (JSONAdapter("ada_01"), CSVAdapter("ada_02"), StreamAdapter("ada_03"))
-    for adapter in (json_adapter, csv_adapter, stream_adapter):
-        stage_adder(adapter)
+        nexus_manager = NexusManager()
+        json_adapter, csv_adapter, stream_adapter = \
+            (JSONAdapter("ada_01"),
+             CSVAdapter("ada_02"),
+             StreamAdapter("ada_03")
+             )
+        for adapter in (json_adapter, csv_adapter, stream_adapter):
+            stage_adder(adapter)
 
-    # Add adapters to manager
-    nexus_manager.add_pipeline(json_adapter)
-    nexus_manager.add_pipeline(csv_adapter)
-    nexus_manager.add_pipeline(stream_adapter)
+        # Add adapters to manager
+        nexus_manager.add_pipeline(json_adapter)
+        nexus_manager.add_pipeline(csv_adapter)
+        nexus_manager.add_pipeline(stream_adapter)
 
-    # Sample data
-    json_data = {"sensor": "temp", "value": 23.5, "unit": "C"}
-    csv_data = "user,action,timestamp"
-    stream_data = "Real-time sensor stream"
-    print("Stage 1: Input validation and parsing")
-    print("Stage 2: Data transformation and enrichment")
-    print("Stage 3: Output formatting and delivery\n")
+        # Sample data
+        json_data = {"sensor": "temp", "value": 23.5, "unit": "C"}
+        csv_data = "user,action,timestamp"
+        stream_data = "Real-time sensor stream"
+        print("Stage 1: Input validation and parsing")
+        print("Stage 2: Data transformation and enrichment")
+        print("Stage 3: Output formatting and delivery\n")
 
-    # Process each type
-    print("=== Multi-Format Data Processing ===\n")
+        # Process each type
+        print("=== Multi-Format Data Processing ===\n")
 
-    print("Processing JSON data through pipeline...")
-    print(f"Input: {json_data}")
-    print("Transform: Enriched with metadata and validation")
-    json_result = nexus_manager.process(json_adapter, json_data)
-    print(json_result)
-    print()
+        print("Processing JSON data through pipeline...")
+        print(f"Input: {json_data}")
+        print("Transform: Enriched with metadata and validation")
+        json_result = nexus_manager.process(json_adapter, json_data)
+        print(json_result)
+        print()
 
-    print("Processing CSV data through same pipeline...")
-    print(f"Input: {csv_data}")
-    print("Transform: Enriched with metadata and validation")
-    csv_result = nexus_manager.process(csv_adapter, csv_data)
-    print(csv_result)
-    print()
+        print("Processing CSV data through same pipeline...")
+        print(f"Input: {csv_data}")
+        print("Transform: Enriched with metadata and validation")
+        csv_result = nexus_manager.process(csv_adapter, csv_data)
+        print(csv_result)
+        print()
 
-    print("Processing Stream data through same pipeline...")
-    print(f"Input: {stream_data}")
-    print("Transform: Enriched with metadata and validation")
-    stream_result = nexus_manager.process(stream_adapter, stream_data)
-    print(stream_result)
-    print()
+        print("Processing Stream data through same pipeline...")
+        print(f"Input: {stream_data}")
+        print("Transform: Enriched with metadata and validation")
+        stream_result = nexus_manager.process(stream_adapter, stream_data)
+        print(stream_result)
+        print()
 
-    # Chaining demo
-    print("=== Pipeline Chaining Demo ===")
-    print("Pipeline A -> Pipeline B -> Pipeline C")
-    print("Data flow: Raw -> Processed -> Analyzed -> Stored")
+        # Chaining demo
+        print("=== Pipeline Chaining Demo ===")
+        print("Pipeline A -> Pipeline B -> Pipeline C")
+        print("Data flow: Raw -> Processed -> Analyzed -> Stored")
 
-    chain_result = nexus_manager.chain_process(
-        [json_adapter, csv_adapter, stream_adapter],
-        "Raw data"
-    )
-    print(f"Chain result: {chain_result}")
-    print("\n=== Error Recovery Test ===")
-    print("Simulating pipeline failure...")
+        chain_result = nexus_manager.chain_process(
+            "Raw data"
+        )
+        print(f"Chain result: {chain_result}")
+        print("\n=== Error Recovery Test ===")
+        print("Simulating pipeline failure...")
 
-    bad_pipeline = JSONAdapter("bad_01")
-    bad_pipeline.add_stage(InputStage())
-    bad_pipeline.add_stage(FailingStage())
+        bad_pipeline = JSONAdapter("bad_01")
+        bad_pipeline.add_stage(InputStage())
+        bad_pipeline.add_stage(FailingStage())
 
-    result = nexus_manager.process(bad_pipeline, {"test": "data"})
+        result = nexus_manager.process(bad_pipeline, {"test": "data"})
 
-    if "Error" in result or result == str({"test": "data"}):
-        print("Error detected in Stage 2: Invalid data format")
-        print("Recovery initiated: Switching to backup processor")
-        result = nexus_manager.process(json_adapter, {"test": "data"})
-        print("Recovery successful: Pipeline restored, processing resumed")
+        if "Error" in result or result == str({"test": "data"}):
+            print("Error detected in Stage 2: Invalid data format")
+            print("Recovery initiated: Switching to backup processor")
+            result = nexus_manager.process(json_adapter, {"test": "data"})
+            print("Recovery successful: Pipeline restored, processing resumed")
 
-    print("\nAll streams processed successfully. Nexus throughput optimal.")
+        print(
+            "\nAll streams processed successfully. Nexus throughput optimal."
+            )
+    except Exception as e:
+        print("ERROR:", e)

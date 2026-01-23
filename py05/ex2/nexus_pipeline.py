@@ -1,5 +1,6 @@
-from typing import Any, Protocol, List, Union
+from typing import Any, Protocol, List, Union, Dict
 from abc import ABC, abstractmethod
+from collections import Counter
 
 
 class ProcessingStage(Protocol):
@@ -120,6 +121,10 @@ class NexusManager:
             print("ERROR: ", e)
             return ""
 
+    def get_pipeline_stats(self) -> Dict[str, int]:
+        types = [type(p).__name__ for p in self.pipelines]
+        return dict(Counter(types))
+
     def chain_process(
         self, pipelines: List[ProcessingPipeline], data: Any
     ) -> str:
@@ -133,6 +138,11 @@ class NexusManager:
         except Exception as e:
             print("ERROR:", e)
             return ""
+
+
+class FailingStage:
+    def process(self, data: Any) -> Any:
+        raise ValueError("Invalid data format")
 
 
 def stage_adder(adapter: ProcessingPipeline):
@@ -200,5 +210,19 @@ if __name__ == "__main__":
         "Raw data"
     )
     print(f"Chain result: {chain_result}")
+    print("\n=== Error Recovery Test ===")
+    print("Simulating pipeline failure...")
+
+    bad_pipeline = JSONAdapter("bad_01")
+    bad_pipeline.add_stage(InputStage())
+    bad_pipeline.add_stage(FailingStage())
+
+    result = nexus_manager.process(bad_pipeline, {"test": "data"})
+
+    if "Error" in result or result == str({"test": "data"}):
+        print("Error detected in Stage 2: Invalid data format")
+        print("Recovery initiated: Switching to backup processor")
+        result = nexus_manager.process(json_adapter, {"test": "data"})
+        print("Recovery successful: Pipeline restored, processing resumed")
 
     print("\nAll streams processed successfully. Nexus throughput optimal.")

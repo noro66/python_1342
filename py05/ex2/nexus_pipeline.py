@@ -13,7 +13,8 @@ class InputStage:
             if data:
                 return data
             return {}
-        except Exception:
+        except Exception as e:
+            print("InputStage ERROR:", e)
             return data if data else {}
 
 
@@ -25,7 +26,8 @@ class TransformStage:
             if isinstance(data, str):
                 data = f"Transformed: {data}"
             return data
-        except Exception:
+        except Exception as e:
+            print("TransformStage ERROR:", e)
             return data
 
 
@@ -33,7 +35,8 @@ class OutputStage:
     def process(self, data: Any) -> Any:
         try:
             return str(data)
-        except Exception:
+        except Exception as e:
+            print("OutputStage ERROR:", e)
             return ""
 
 
@@ -53,7 +56,7 @@ class ProcessingPipeline(ABC):
                 result = stage.process(result)
             return result
         except Exception as e:
-            print("ERROR: ", e)
+            print("Process ERROR: ", e)
             return data
 
     @abstractmethod

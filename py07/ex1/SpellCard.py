@@ -22,6 +22,11 @@ class SpellCard(Card):
                                  )
         }
 
+    def get_card_info(self) -> dict:
+        card_info = super().get_card_info()
+        card_info["type"] = "Spell"
+        return card_info
+
     def resolve_effect(self, targets: list) -> dict:
         return {
             'spell': self.name,

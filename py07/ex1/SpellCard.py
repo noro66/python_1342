@@ -1,30 +1,28 @@
-from ex0 import Card
+from ex0.Card import Card
 
 
 class SpellCard(Card):
     def __init__(self, name: str, cost: int, rarity: str, effect_type: str):
         if effect_type not in ("damage", "heal", "buff", "debuff"):
             raise ValueError(
-                "ERROR: Effect type should be in",
-                "('damage', 'heal', 'buff', 'debuff')"
+                "Effect type must be one of:",
+                "'damage', 'heal', 'buff', 'debuff'"
                 )
         super().__init__(name, cost, rarity)
         self.effect_type = effect_type
+        self.type = "Spell"
 
     def play(self, game_state: dict) -> dict:
         return {
          'card_played': self.name,
          'mana_used': self.cost,
-         'effect': game_state.get(
-                                 "effect " +
-                                 f"Deal {self.cost} {self.effect_type}" +
-                                 " to target"
-                                 )
+         'effect': f"Deal {self.cost} {self.effect_type} to target"
         }
 
     def get_card_info(self) -> dict:
         card_info = super().get_card_info()
-        card_info["type"] = "Spell"
+        card_info["type"] = self.type
+        card_info["effect_type"] = self.effect_type
         return card_info
 
     def resolve_effect(self, targets: list) -> dict:

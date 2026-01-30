@@ -1,14 +1,23 @@
 from ex0.Card import Card
 from ex2.Combatable import Combatable
 from ex2.Magical import Magical
+from enum import Enum
+import random
 
 
 class EliteCard(Card, Combatable, Magical):
+    class DamageType(Enum):
+        MELEE = 1
+        MAGIC = 2
+        POISON = 3
+
     def __init__(self, name: str, cost: int, rarity: str,
                  attack_power: int, defense: int, mana: int, health: int):
         Card.__init__(self, name, cost, rarity)
         Combatable.__init__(self, defense, attack_power)
         Magical.__init__(self, mana, health)
+        self.spells_available = ['Fireball', 'Lightning Bolt', 'Heal',
+                                 'Shield']
 
     def play(self, game_state: dict) -> dict:
 
@@ -16,11 +25,13 @@ class EliteCard(Card, Combatable, Magical):
                 'effect': game_state.get("effect", "some effect")}
 
     def attack(self, target) -> dict:
+        combat_type = random.choice(list(self.DamageType))
+
         return {
                 'attacker': self.name,
                 'target': target.name if isinstance(target, Card) else target,
                 'damage': self.attack_power,
-                'combat_type': 'melee'
+                'combat_type': combat_type.name.lower()
                 }
 
     def defend(self, incoming_damage: int) -> dict:
@@ -65,4 +76,4 @@ class EliteCard(Card, Combatable, Magical):
         return {'channeled': amount, 'total_mana': self.mana}
 
     def get_magic_stats(self) -> dict:
-        return {'mana': self.mana, 'spells_available': []}
+        return {'mana': self.mana, 'spells_available': self.spells_available}

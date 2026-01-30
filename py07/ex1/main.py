@@ -6,9 +6,7 @@ from ex1.Deck import Deck
 
 print("=== DataDeck Deck Builder ===\n")
 
-print("Building deck with different card types...\n")
-# Deck stats: {'total_cards': 3, 'creatures': 1, 'spells': 1,
-# 'artifacts': 1, 'avg_cost': 4.0}
+print("Building deck with different card types...")
 try:
     creature_card = CreatureCard("Fire Dragon", 5, "Rare", 6, 8)
     spell_card = SpellCard("Lightning Bolt", 3, "Rare", "damage")
@@ -28,7 +26,6 @@ try:
     print("Drawing and playing cards:\n")
     deck.shuffle()
     for i in range(deck_stats['total_cards']):
-
         card = deck.draw_card()
         card_info = card.get_card_info()
         print(f"Drew: {card.name} ({card_info['type']})")

@@ -22,6 +22,8 @@ class Deck:
         random.shuffle(self.cards)
 
     def draw_card(self) -> Card:
+        if not self.cards:
+            raise ValueError("Cannot draw from empty deck")
         return self.cards.pop()
 
     def get_deck_stats(self) -> dict:
@@ -39,10 +41,10 @@ class Deck:
                            )
         total = len(self.cards)
         total_cost = sum(card.cost for card in self.cards)
-        avg_cost = total_cost / total if total > 0 else 0
+        avg_cost = round(total_cost / total, 1) if total > 0 else 0.0
         return {'total_cards': total,
                 'creatures': creatures_len,
                 'spells': spells_len,
                 'artifacts': artifact_len,
-                'avg_cost': f"{avg_cost:1.f}"
+                'avg_cost': avg_cost
                 }

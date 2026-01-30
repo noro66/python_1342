@@ -13,6 +13,7 @@ class CreatureCard(Card):
 
         self.attack = attack
         self.health = health
+        self.type = "Creature"
 
     def play(self, game_state: dict) -> dict:
         play_info = {"card_played": self.name,
@@ -25,7 +26,7 @@ class CreatureCard(Card):
 
     def get_card_info(self) -> dict:
         card_info = super().get_card_info()
-        card_info["type"] = "Creature"
+        card_info["type"] = self.type
 
         return card_info
 

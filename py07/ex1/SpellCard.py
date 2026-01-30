@@ -5,7 +5,7 @@ class SpellCard(Card):
     def __init__(self, name: str, cost: int, rarity: str, effect_type: str):
         if effect_type not in ("damage", "heal", "buff", "debuff"):
             raise ValueError(
-                "Effect type must be one of:",
+                "Effect type must be one of: " +
                 "'damage', 'heal', 'buff', 'debuff'"
                 )
         super().__init__(name, cost, rarity)

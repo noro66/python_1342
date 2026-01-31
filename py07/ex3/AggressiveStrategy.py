@@ -19,6 +19,6 @@ class AggressiveStrategy(GameStrategy):
                 'cards_played': [c.name for c in playable_cards[:2]],
                 'mana_used': sum(c.cost for c in playable_cards[:2]),
                 'targets_attacked': self.prioritize_targets(["Enemy Player"]),
-                'damage_dealt': 8  # In a real game, this would be calculated
+                'damage_dealt': 8
             }
         }

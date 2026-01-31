@@ -2,7 +2,6 @@ from ex2.EliteCard import EliteCard
 
 print("=== DataDeck Ability System ===")
 try:
-    # Show EliteCard capabilities from each interface
     print("EliteCard capabilities:")
     print("- Card: ['play', 'get_card_info', 'is_playable']")
     print("- Combatable: ['attack', 'defend', 'get_combat_stats']")
@@ -27,5 +26,6 @@ try:
     print(f"Mana channel: {mana_result}")
 
     print("\nMultiple interface implementation successful!")
+
 except Exception as e:
     print("ERROR:", e)

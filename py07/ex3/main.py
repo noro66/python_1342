@@ -22,6 +22,10 @@ try:
 
     turn_execution = engine.simulate_turn()
 
+    hand = turn_execution['hand']
+    hand_display = [f"{card.name} ({card.cost})" for card in hand]
+    print(f"Hand: {hand_display}")
+
     print("Turn execution:")
     print(f"Strategy: {turn_execution['strategy']}")
     print(f"Actions: {turn_execution['actions']}")

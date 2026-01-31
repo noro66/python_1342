@@ -6,14 +6,14 @@ class Magical(ABC):
         self.mana = mana
         self.health = health
 
-    @abstractmethod
     def cast_spell(self, spell_name: str, targets: list) -> dict:
         ...
+    cast_spell = abstractmethod(cast_spell)
 
-    @abstractmethod
     def channel_mana(self, amount: int) -> dict:
         ...
+    channel_mana = abstractmethod(channel_mana)
 
-    @abstractmethod
     def get_magic_stats(self) -> dict:
         ...
+    get_magic_stats = abstractmethod(get_magic_stats)

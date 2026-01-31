@@ -6,14 +6,14 @@ class Combatable(ABC):
         self.attack_power = attack_power
         self.defense = defense
 
-    @abstractmethod
     def attack(self, target: str) -> dict:
         ...
+    attack = abstractmethod(attack)
 
-    @abstractmethod
     def defend(self, incoming_damage: int) -> dict:
         ...
+    defend = abstractmethod(defend)
 
-    @abstractmethod
     def get_combat_stats(self) -> dict:
         ...
+    get_combat_stats = abstractmethod(get_combat_stats)

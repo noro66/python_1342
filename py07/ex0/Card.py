@@ -7,9 +7,9 @@ class Card(ABC):
         self.cost = cost
         self.rarity = rarity
 
-    @abstractmethod
     def play(self, game_state: dict) -> dict:
         ...
+    play = abstractmethod(play)
 
     def get_card_info(self) -> dict:
         return vars(self)

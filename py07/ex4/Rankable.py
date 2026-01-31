@@ -2,14 +2,14 @@ from abc import ABC, abstractmethod
 
 
 class Rankable(ABC):
-    @abstractmethod
     def calculate_rating(self) -> int: ...
+    calculate_rating = abstractmethod(calculate_rating)
 
-    @abstractmethod
     def update_wins(self, wins: int) -> None: ...
+    update_wins = abstractmethod(update_wins)
 
-    @abstractmethod
     def update_losses(self, losses: int) -> None: ...
+    update_losses = abstractmethod(update_losses)
 
-    @abstractmethod
     def get_rank_info(self) -> dict: ...
+    get_rank_info = abstractmethod(get_rank_info)

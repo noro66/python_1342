@@ -8,7 +8,8 @@ try:
 
     print("Testing Abstract Base Class Design:")
 
-    creature: CreatureCard = CreatureCard("Fire Dragon", 5, Rarity.LEGENDARY, 7, 5)
+    creature: CreatureCard = \
+        CreatureCard("Fire Dragon", 5, Rarity.LEGENDARY, 7, 5)
 
     print("CreatureCard Info:", creature.get_card_info())
 
@@ -16,7 +17,7 @@ try:
 
     print("Playing Fire Dragon with 6 mana available:")
     print("Playable:", creature.is_playable(6))
-    
+
     game_state: Dict[str, Any] = {}
     print("Play result:", creature.play(game_state))
 
@@ -33,9 +34,11 @@ try:
     print()
 
     print("Testing different rarities:")
-    common_creature: CreatureCard = CreatureCard("Goblin", 2, Rarity.COMMON, 2, 1)
-    rare_creature: CreatureCard = CreatureCard("Ancient Dragon", 8, Rarity.RARE, 8, 8)
-    
+    common_creature: CreatureCard = \
+        CreatureCard("Goblin", 2, Rarity.COMMON, 2, 1)
+    rare_creature: CreatureCard = \
+        CreatureCard("Ancient Dragon", 8, Rarity.RARE, 8, 8)
+
     print(f"Common creature: {common_creature.get_card_info()}")
     print(f"Rare creature: {rare_creature.get_card_info()}")
 

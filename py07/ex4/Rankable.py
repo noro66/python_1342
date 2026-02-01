@@ -3,7 +3,7 @@ from typing import Dict, Any
 
 
 class Rankable(ABC):
-    def calculate_rating(self) -> int:
+    def calculate_rating(self) -> int:  # type: ignore
         pass
     calculate_rating = abstractmethod(calculate_rating)
 
@@ -15,6 +15,6 @@ class Rankable(ABC):
         pass
     update_losses = abstractmethod(update_losses)
 
-    def get_rank_info(self) -> Dict[str, Any]:
+    def get_rank_info(self) -> Dict[str, Any]:  # type: ignore
         pass
     get_rank_info = abstractmethod(get_rank_info)

@@ -5,8 +5,8 @@ from typing import Dict, Any
 
 class GameEngine:
     def __init__(self):
-        self.factory: CardFactory = None  # type ignore
-        self.strategy: GameStrategy = None
+        self.factory: CardFactory = None  # type: ignore
+        self.strategy: GameStrategy = None  # type: ignore
         self.history: Dict[str, Any] = {
             "turns_simulated": 0,
             "total_damage": 0,

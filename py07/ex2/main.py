@@ -13,7 +13,7 @@ try:
 
     print("\nCombat phase:")
     attack_result = card.attack("Enemy")
-    # Format output to match expected
+
     simple_attack = {
         'attacker': attack_result['attacker'],
         'target': attack_result['target'],

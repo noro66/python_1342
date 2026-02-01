@@ -1,24 +1,17 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Union
+from typing import Dict, Any, List
 
 
 class Magical(ABC):
-    def __init__(self, mana: int, health: int) -> None:
-        self.mana: int = mana
-        self.health: int = health
-
-    @abstractmethod
     def cast_spell(
          self, spell_name: str, targets: List[str]) -> Dict[str, Any]:
-        """Cast a spell targeting specified entities"""
         pass
+    cast_spell = abstractmethod(cast_spell)
 
-    @abstractmethod
-    def channel_mana(self, amount: int) -> Dict[str, Union[int, str]]:
-        """Channel additional mana"""
+    def channel_mana(self, amount: int) -> Dict[str, Any]:
         pass
+    channel_mana = abstractmethod(channel_mana)
 
-    @abstractmethod
     def get_magic_stats(self) -> Dict[str, Any]:
-        """Get current magical statistics"""
         pass
+    get_magic_stats = abstractmethod(get_magic_stats)

@@ -1,15 +1,20 @@
 from abc import ABC, abstractmethod
+from typing import Dict, Any
 
 
 class Rankable(ABC):
-    def calculate_rating(self) -> int: ...
+    def calculate_rating(self) -> int:
+        pass
     calculate_rating = abstractmethod(calculate_rating)
 
-    def update_wins(self, wins: int) -> None: ...
+    def update_wins(self, wins: int) -> None:
+        pass
     update_wins = abstractmethod(update_wins)
 
-    def update_losses(self, losses: int) -> None: ...
+    def update_losses(self, losses: int) -> None:
+        pass
     update_losses = abstractmethod(update_losses)
 
-    def get_rank_info(self) -> dict: ...
+    def get_rank_info(self) -> Dict[str, Any]:
+        pass
     get_rank_info = abstractmethod(get_rank_info)

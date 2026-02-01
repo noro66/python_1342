@@ -1,12 +1,12 @@
-from typing import Dict, List
-import random
 from .TournamentCard import TournamentCard
+from typing import Dict, List, Any
+import random
 
 
 class TournamentPlatform:
     def __init__(self):
         self.registered_cards: Dict[str, TournamentCard] = {}
-        self.matches_played = 0
+        self.matches_played: int = 0
 
     def register_card(self, card: TournamentCard) -> str:
         name_part = card.name.lower().replace(' ', '_')
@@ -15,7 +15,7 @@ class TournamentPlatform:
         self.registered_cards[card_id] = card
         return card_id
 
-    def create_match(self, card1_id: str, card2_id: str) -> dict:
+    def create_match(self, card1_id: str, card2_id: str) -> Dict[str, Any]:
         if card1_id not in self.registered_cards \
          or card2_id not in self.registered_cards:
             return {"error": "One or both cards not found"}
@@ -44,7 +44,7 @@ class TournamentPlatform:
             "loser_rating": loser.calculate_rating()
         }
 
-    def get_leaderboard(self) -> List[dict]:
+    def get_leaderboard(self) -> List[Dict[str, Any]]:
         leaderboard = []
         for card_id, card in self.registered_cards.items():
             leaderboard.append({
@@ -57,7 +57,7 @@ class TournamentPlatform:
         leaderboard.sort(key=lambda x: x["rating"], reverse=True)
         return leaderboard
 
-    def generate_tournament_report(self) -> dict:
+    def generate_tournament_report(self) -> Dict[str, Any]:
         if not self.registered_cards:
             avg_rating = 0
         else:
@@ -70,5 +70,4 @@ class TournamentPlatform:
             "matches_played": self.matches_played,
             "avg_rating": avg_rating,
             "platform_status": "active"
-            if self.registered_cards else "inactive"
         }

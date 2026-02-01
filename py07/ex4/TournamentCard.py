@@ -1,18 +1,22 @@
 from ex0.Card import Card
 from ex2.Combatable import Combatable
 from .Rankable import Rankable
+from typing import Dict, Any
 import random
 
 
 class TournamentCard(Card, Combatable, Rankable):
-    def __init__(self, name, cost, rarity, attack_power, defense):
+    def __init__(
+         self, name: str, cost: int,
+         rarity: str, attack_power: int, defense: int):
         Card.__init__(self, name, cost, rarity)
-        Combatable.__init__(self, defense, attack_power)
-        self.wins = 0
-        self.losses = 0
-        self.base_rating = 1200
+        self.attack_power: int = attack_power
+        self.defense: int = defense
+        self.wins: int = 0
+        self.losses: int = 0
+        self.base_rating: int = 1200
 
-    def play(self, game_state: dict) -> dict:
+    def play(self, game_state: Dict[str, Any]) -> Dict[str, Any]:
         return {
             "action": "card_played",
             "card": self.name,
@@ -20,7 +24,7 @@ class TournamentCard(Card, Combatable, Rankable):
             "game_state": game_state
         }
 
-    def attack(self, target) -> dict:
+    def attack(self, target) -> Dict[str, Any]:
         damage = self.attack_power + random.randint(-2, 2)
         return {
             "attacker": self.name,
@@ -29,7 +33,7 @@ class TournamentCard(Card, Combatable, Rankable):
             "attack_power": self.attack_power
         }
 
-    def defend(self, incoming_damage: int) -> dict:
+    def defend(self, incoming_damage: int) -> Dict[str, Any]:
         actual_damage = max(0, incoming_damage - self.defense)
         return {
             "defender": self.name,
@@ -38,7 +42,7 @@ class TournamentCard(Card, Combatable, Rankable):
             "actual_damage": actual_damage
         }
 
-    def get_combat_stats(self) -> dict:
+    def get_combat_stats(self) -> Dict[str, Any]:
         return {
             "name": self.name,
             "attack_power": self.attack_power,
@@ -54,7 +58,7 @@ class TournamentCard(Card, Combatable, Rankable):
     def update_losses(self, losses: int) -> None:
         self.losses += losses
 
-    def get_rank_info(self) -> dict:
+    def get_rank_info(self) -> Dict[str, Any]:
         return {
             "name": self.name,
             "rating": self.calculate_rating(),
@@ -63,7 +67,7 @@ class TournamentCard(Card, Combatable, Rankable):
             "record": f"{self.wins}-{self.losses}"
         }
 
-    def get_tournament_stats(self) -> dict:
+    def get_tournament_stats(self) -> Dict[str, Any]:
         return {
             "rating": self.calculate_rating(),
             "record": f"{self.wins}-{self.losses}",

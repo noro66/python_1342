@@ -1,23 +1,16 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Union
+from typing import Dict, Any
 
 
 class Combatable(ABC):
-    def __init__(self, defense: int, attack_power: int) -> None:
-        self.attack_power: int = attack_power
-        self.defense: int = defense
-
-    @abstractmethod
-    def attack(self, target: Union['Combatable', str]) -> Dict[str, Any]:
-        """Execute an attack on a target"""
+    def attack(self, target) -> Dict[str, Any]:
         pass
+    attack = abstractmethod(attack)
 
-    @abstractmethod
     def defend(self, incoming_damage: int) -> Dict[str, Any]:
-        """Defend against incoming damage"""
         pass
+    defend = abstractmethod(defend)
 
-    @abstractmethod
-    def get_combat_stats(self) -> Dict[str, Union[int, bool]]:
-        """Get current combat statistics"""
+    def get_combat_stats(self) -> Dict[str, Any]:
         pass
+    get_combat_stats = abstractmethod(get_combat_stats)

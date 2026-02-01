@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from .TournamentCard import TournamentCard
 from .TournamentPlatform import TournamentPlatform
 
@@ -10,21 +8,8 @@ try:
 
     print("Registering Tournament Cards...")
 
-    fire_dragon = TournamentCard(
-        name="Fire Dragon",
-        cost=6,
-        rarity="Legendary",
-        attack_power=8,
-        defense=7
-    )
-
-    ice_wizard = TournamentCard(
-        name="Ice Wizard",
-        cost=4,
-        rarity="Epic",
-        attack_power=6,
-        defense=5
-    )
+    fire_dragon = TournamentCard("Fire Dragon", 6, "Legendary", 8, 7)
+    ice_wizard = TournamentCard("Ice Wizard", 4, "Epic", 6, 5)
     ice_wizard.base_rating = 1150
 
     dragon_id = "dragon_001"
@@ -61,9 +46,10 @@ try:
     print("\nTournament Leaderboard:")
     leaderboard = platform.get_leaderboard()
     for i, entry in enumerate(leaderboard, 1):
-        rating_info = f"Rating: {entry['rating']}"
-        record_info = f"({entry['record']})"
-        print(f"{i}. {entry['name']} - {rating_info} {record_info}")
+        print(
+            f"{i}. {entry['name']} - Rating:",
+            f"{entry['rating']} ({entry['record']})"
+            )
 
     print("\nPlatform Report:")
     report = platform.generate_tournament_report()

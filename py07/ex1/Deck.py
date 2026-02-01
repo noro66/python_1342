@@ -1,13 +1,6 @@
 from ex0.Card import Card
-from typing import List, Dict, Union, Optional
-from enum import Enum
+from typing import List, Dict, Union
 import random
-
-
-class CardType(Enum):
-    CREATURE = "Creature"
-    SPELL = "Spell"
-    ARTIFACT = "Artifact"
 
 
 class Deck:
@@ -16,7 +9,7 @@ class Deck:
 
     def add_card(self, card: Card) -> None:
         if not isinstance(card, Card):
-            raise ValueError("the card should be  subclass of Card")
+            raise ValueError("Only Card instances can be added to deck")
         self.cards.append(card)
 
     def remove_card(self, card_name: str) -> bool:
@@ -35,41 +28,22 @@ class Deck:
         return self.cards.pop()
 
     def get_deck_stats(self) -> Dict[str, Union[int, float]]:
-        creatures_len: int = len([card
-                                  for card in self.cards
-                                  if hasattr(card, 'type')
-                                  and card.type == CardType.CREATURE.value]
-                                 )
-        spells_len: int = len([card
-                               for card in self.cards
-                               if hasattr(card, 'type')
-                               and card.type == CardType.SPELL.value]
-                              )
-        artifact_len: int = len([card
-                                 for card in self.cards
-                                 if hasattr(card, 'type')
-                                 and card.type == CardType.ARTIFACT.value]
-                                )
-        total: int = len(self.cards)
-        total_cost: int = sum(card.cost for card in self.cards)
-        avg_cost: float = round(total_cost / total, 1) if total > 0 else 0.0
+        creatures = len([card for card in self.cards
+                         if hasattr(card, 'type') and card.type == "Creature"])
+        spells = len([card for card in self.cards
+                      if hasattr(card, 'type') and card.type == "Spell"])
+        artifacts = len([card for card in self.cards
+                         if hasattr(card, 'type') and card.type == "Artifact"])
+        total = len(self.cards)
+        avg_cost = round(
+            sum(
+                card.cost for card in self.cards
+                ) / total, 1) if total > 0 else 0.0
 
-        stats: Dict[str, Union[int, float]] = {'total_cards': total,
-                                               'creatures': creatures_len,
-                                               'spells': spells_len,
-                                               'artifacts': artifact_len,
-                                               'avg_cost': avg_cost}
-        return stats
-
-    def find_cards_by_type(self, card_type: CardType) -> List[Card]:
-        matching_cards: List[Card] = [card for card in self.cards
-                                      if hasattr(card, 'type')
-                                      and card.type == card_type.value
-                                      ]
-        return matching_cards
-
-    def get_card_by_name(self, name: str) -> Optional[Card]:
-        for card in self.cards:
-            if card.name == name:
-                return card
-        return None
+        return {
+            'total_cards': total,
+            'creatures': creatures,
+            'spells': spells,
+            'artifacts': artifacts,
+            'avg_cost': avg_cost
+        }

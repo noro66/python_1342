@@ -7,7 +7,7 @@ if __name__ == "__main__":
     try:
         print("alchemy.elements.create_fire():",
               alchemy.elements.create_fire())
-        print("alchemy.elements.create_water():",
+        print("alchemy.elements.create_water():"alchemy,
               alchemy.elements.create_water())
         print("alchemy.elements.create_earth():",
               alchemy.elements.create_earth())

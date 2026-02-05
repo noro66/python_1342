@@ -113,7 +113,7 @@ def check_security() -> bool:
             missing.append(var)
 
     if missing:
-        print(f"    [WARNING] Missing required variables: {', '.join(missing)}")
+        print(f"   [WARNING] Missing required variables: {', '.join(missing)}")
         all_ok = False
     else:
         print("    [OK] All required variables set")

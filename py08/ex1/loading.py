@@ -59,29 +59,30 @@ def print_installation_instructions() -> None:
     print("    poetry install")
     print("    poetry run python loading.py")
 
+
 def run_analysis():
     """Simple demonstration that all dependencies work."""
     import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
     import requests
-    
+
     # 1. Use requests - fetch something from internet
     try:
         response = requests.get("https://httpbin.org/get", timeout=5)
         print(f"    Request status: {response.status_code}")
     except requests.RequestException as e:
         print(f"    Request failed: {e}")
-        print(f"    (This is OK - just demonstrating requests is installed)")
-    
+        print("    (This is OK - just demonstrating requests is installed)")
+
     # 2. Use numpy - create random numbers
     data = np.random.rand(100) * 100
     print(f"    Generated {len(data)} random numbers")
-    
+
     # 3. Use pandas - put data in DataFrame
     df = pd.DataFrame({'signal': data})
     print(f"    Mean value: {df['signal'].mean():.2f}")
-    
+
     # 4. Use matplotlib - create simple plot
     plt.plot(df['signal'])
     plt.title('Matrix Signal Analysis')

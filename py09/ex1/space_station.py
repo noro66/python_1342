@@ -63,6 +63,7 @@ def main():
             oxygen_level=88.0,
             last_maintenance="2024-01-15"
         )
+        print(invalid_station)
     except ValidationError as e:
         print("    Expected validation error:")
         for error in e.errors():

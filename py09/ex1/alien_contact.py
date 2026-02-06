@@ -56,7 +56,7 @@ class AlienContact(BaseModel):
         return self
 
 
-def main():
+def main() -> None:
     print("Alien Contact Log Validation")
     print("=" * 40)
 
@@ -93,7 +93,7 @@ def main():
     test_invalid_contacts()
 
 
-def test_invalid_contacts():
+def test_invalid_contacts() -> None:
     """Test various validation error scenarios."""
 
     # Test 1: Invalid contact ID (doesn't start with AC)

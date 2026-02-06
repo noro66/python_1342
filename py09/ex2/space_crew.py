@@ -87,7 +87,7 @@ class SpaceMission(BaseModel):
         return self
 
 
-def display_mission(mission: SpaceMission):
+def display_mission(mission: SpaceMission) -> None:
     """Display mission details in a formatted way."""
     print(f"Mission: {mission.mission_name}")
     print(f"    ID: {mission.mission_id}")
@@ -104,7 +104,7 @@ def display_mission(mission: SpaceMission):
         )
 
 
-def main():
+def main() -> None:
     print("Space Mission Crew Validation")
     print("=" * 45)
 
@@ -160,7 +160,7 @@ def main():
     test_invalid_missions()
 
 
-def test_invalid_missions():
+def test_invalid_missions() -> None:
     """Test various validation error scenarios."""
 
     # Test 1: Invalid mission ID

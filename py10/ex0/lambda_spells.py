@@ -30,7 +30,7 @@ def spell_transformer(spells: list[str]) -> list[str]:
             return []
         return list(map(lambda x: f"* {x} *", spells))
     except TypeError as e:
-        print("SPLEE TRANSORMER ERROR:", e)
+        print("SPELL TRANSORMER ERROR:", e)
         return []
 
 

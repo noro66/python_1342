@@ -1,40 +1,42 @@
 """Lambda Sanctum - Master anonymous functions."""
+import sys
+from typing import List
 
 
-def artifact_sorter(artifacts: list[dict]) -> list[dict]:
+def artifact_sorter(artifacts: List[dict]) -> List[dict]:
     """Sort artifacts by power level (descending)."""
     try:
         if not artifacts:
             return []
         return sorted(artifacts, key=lambda x: x["power"], reverse=True)
     except (KeyError, TypeError) as e:
-        print("ARTIFACT SORT ERROR:", e)
+        print("ARTIFACT SORT ERROR:", e, file=sys.stderr)
         return []
 
 
-def power_filter(mages: list[dict], min_power: int) -> list[dict]:
+def power_filter(mages: List[dict], min_power: int) -> List[dict]:
     """Filter mages with power >= min_power."""
     try:
         if not mages:
             return []
         return list(filter(lambda x: x["power"] >= min_power, mages))
     except (KeyError, TypeError) as e:
-        print("POWER_FILTER ERROR:", e)
+        print("POWER_FILTER ERROR:", e, file=sys.stderr)
         return []
 
 
-def spell_transformer(spells: list[str]) -> list[str]:
+def spell_transformer(spells: List[str]) -> List[str]:
     """Add decorations to spell names."""
     try:
         if not spells:
             return []
         return list(map(lambda x: f"* {x} *", spells))
     except TypeError as e:
-        print("SPELL TRANSORMER ERROR:", e)
+        print("SPELL TRANSORMER ERROR:", e, file=sys.stderr)
         return []
 
 
-def mage_stats(mages: list[dict]) -> dict:
+def mage_stats(mages: List[dict]) -> dict:
     """Calculate power statistics."""
     default_stats = {
         "max_power": 0,
@@ -57,7 +59,7 @@ def mage_stats(mages: list[dict]) -> dict:
             "avg_power": round(sum(mage_power) / len(mage_power), 2)
         }
     except (KeyError, TypeError, ZeroDivisionError) as e:
-        print("MAGE STATS ERROR:", e)
+        print("MAGE STATS ERROR:", e, file=sys.stderr)
         return default_stats
 
 

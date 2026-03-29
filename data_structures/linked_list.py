@@ -21,6 +21,16 @@ class LinkeList:
             curr.next = node
         self.size += 1
 
+    def get_node(self, index: int):
+        if self.size <= 0:
+            return (None)
+        if self.size <= index:
+            return (None)
+        curr = self.head
+        for _ in range(index):
+            curr = curr.next
+        return curr
+
     def print_list(self):
         curr = self.head
         while curr is not None:
@@ -38,4 +48,5 @@ linked_list.add_back(4)
 linked_list.add_back(5)
 linked_list.add_back(6)
 
-linked_list.print_list()
+# linked_list.print_list()
+print(linked_list.get_node(4))

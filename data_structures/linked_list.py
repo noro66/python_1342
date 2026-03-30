@@ -6,19 +6,31 @@ class ListNode:
 
 class LinkeList:
     def __init__(self) -> None:
-        self.head: ListNode | None = None
-        self.tail: ListNode | None = None
+        self.head = None
+        self.tail = None
         self.size: int = 0
 
+    def append(self, value):
+        new_node = ListNode(value)
+        if self.head is not None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+        return True
+
     def add_back(self, value):
-        node = ListNode(value)
+        new_node = ListNode(value)
         if not self.head:
-            self.head = node
+            self.head = new_node
+            self.tail = new_node
         else:
             curr = self.head
             while curr.next is not None:
                 curr = curr.next
-            curr.next = node
+            curr.next = new_node
+            self.tail = new_node
         self.size += 1
 
     def get_node(self, index: int):
@@ -66,11 +78,9 @@ class LinkeList:
             return None
         slow = self.head
         fast = self.head
-        while fast is not None:
+        while fast and fast != self.tail:
             slow = slow.next
-            fast = fast.next
-            if fast is not None:
-                fast = fast.next
+            fast = fast.next.next
         return slow
 
 
@@ -82,8 +92,11 @@ linked_list.add_back(3)
 linked_list.add_back(4)
 linked_list.add_back(5)
 linked_list.add_back(6)
+linked_list.add_back(7)
+linked_list.add_back(8)
+linked_list.add_back(9)
 
 # linked_list.print_list()
-print(linked_list.find_middle_node())
+print(linked_list.find_middle_node().value)
 # print()
 # linked_list.print_list()

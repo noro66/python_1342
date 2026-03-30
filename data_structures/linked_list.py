@@ -110,15 +110,25 @@ class LinkeList:
 
     def remove_duplicates(self):
         current = self.head
-
+        seen = set()
+        prev = None
         while current:
-            runner = current
-            while runner:
-                if runner.next and current.value == runner.next.value:
-                    runner.next = runner.next.next
-                else:
-                    runner = runner.next
+            if current.value in seen:
+                prev.next = current.next
+                self.size -= 1
+            else:
+                seen.add(current.value)
+                prev = current
             current = current.next
+        # while current:
+        # runner = current
+        # while runner:
+        #     if runner.next and current.value == runner.next.value:
+        #         runner.next = runner.next.next
+        #         self.size -= 1
+        #     else:
+        #         runner = runner.next
+        # current = current.next
 
 
 linked_list = LinkeList()

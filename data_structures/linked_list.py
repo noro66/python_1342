@@ -27,9 +27,32 @@ class LinkeList:
         if self.size <= index:
             return (None)
         curr = self.head
-        for _ in range(index):
+        for _ in range(index - 1):
             curr = curr.next
         return curr
+
+    def remove_node(self, value):
+        curr = self.head
+        prev = None
+        if self.size == 0:
+            return None
+
+        while curr.next is not None and curr.value != value:
+            prev = curr
+            curr = curr.next
+
+        if not prev and curr.value == value:
+            del self.head
+            self.head = None
+            self.size -= 1
+            return curr.value
+
+        elif curr.value == value:
+            prev.next = curr.next
+            self.size -= 1
+            return curr.value
+
+        return None
 
     def print_list(self):
         curr = self.head
@@ -41,12 +64,14 @@ class LinkeList:
 
 linked_list = LinkeList()
 
-linked_list.add_back(1)
-linked_list.add_back(2)
-linked_list.add_back(3)
-linked_list.add_back(4)
-linked_list.add_back(5)
-linked_list.add_back(6)
+# linked_list.add_back(1)
+# linked_list.add_back(2)
+# linked_list.add_back(3)
+# linked_list.add_back(4)
+# linked_list.add_back(5)
+# linked_list.add_back(6)
 
 # linked_list.print_list()
-print(linked_list.get_node(4))
+print(linked_list.remove_node(6))
+# print()
+# linked_list.print_list()

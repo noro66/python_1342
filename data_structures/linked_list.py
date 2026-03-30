@@ -61,17 +61,29 @@ class LinkeList:
             curr = curr.next
         print("ths size of the linked list is : ", self.size)
 
+    def find_middle_node(self):
+        if self.size == 0:
+            return None
+        slow = self.head
+        fast = self.head
+        while fast is not None:
+            slow = slow.next
+            fast = fast.next
+            if fast is not None:
+                fast = fast.next
+        return slow
+
 
 linked_list = LinkeList()
 
-# linked_list.add_back(1)
-# linked_list.add_back(2)
-# linked_list.add_back(3)
-# linked_list.add_back(4)
-# linked_list.add_back(5)
-# linked_list.add_back(6)
+linked_list.add_back(1)
+linked_list.add_back(2)
+linked_list.add_back(3)
+linked_list.add_back(4)
+linked_list.add_back(5)
+linked_list.add_back(6)
 
 # linked_list.print_list()
-print(linked_list.remove_node(6))
+print(linked_list.find_middle_node())
 # print()
 # linked_list.print_list()

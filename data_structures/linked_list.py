@@ -108,6 +108,18 @@ class LinkeList:
 
         return slow
 
+    def remove_duplicates(self):
+        current = self.head
+
+        while current:
+            runner = current
+            while runner:
+                if runner.next and current.value == runner.next.value:
+                    runner.next = runner.next.next
+                else:
+                    runner = runner.next
+            current = current.next
+
 
 linked_list = LinkeList()
 
@@ -115,13 +127,14 @@ linked_list.add_back(1)
 linked_list.add_back(2)
 linked_list.add_back(3)
 linked_list.add_back(4)
-linked_list.add_back(5)
-linked_list.add_back(6)
-linked_list.add_back(7)
-linked_list.add_back(8)
+linked_list.add_back(1)
+linked_list.add_back(1)
+linked_list.add_back(2)
+linked_list.add_back(3)
 linked_list.add_back(9)
 
-# linked_list.print_list()
-print(linked_list.find_kth_from_end(15))
-# print()
-# linked_list.print_list()
+print("beofre: ")
+linked_list.print_list()
+linked_list.remove_duplicates()
+print("after: ")
+linked_list.print_list()

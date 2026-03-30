@@ -122,6 +122,6 @@ linked_list.add_back(8)
 linked_list.add_back(9)
 
 # linked_list.print_list()
-print(linked_list.find_kth_from_end(1).value)
+print(linked_list.find_kth_from_end(15))
 # print()
 # linked_list.print_list()

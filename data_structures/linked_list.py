@@ -83,6 +83,18 @@ class LinkeList:
             fast = fast.next.next
         return slow
 
+    def has_loop(self):
+        if self.size == 0:
+            return True
+        slow = self.head
+        fast = self.head
+        while fast and fast != self.tail:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
+
 
 linked_list = LinkeList()
 
@@ -97,6 +109,6 @@ linked_list.add_back(8)
 linked_list.add_back(9)
 
 # linked_list.print_list()
-print(linked_list.find_middle_node().value)
+# print(linked_list.find_middle_node().value)
 # print()
 # linked_list.print_list()

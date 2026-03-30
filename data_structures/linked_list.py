@@ -12,13 +12,13 @@ class LinkeList:
 
     def append(self, value):
         new_node = ListNode(value)
-        if self.head is not None:
+        if self.head is None:
             self.head = new_node
-            self.tail = new_node
         else:
-            self.tail.next = new_node
-            self.tail = new_node
-        return True
+            current = self.head
+            while current.next is not None:
+                current = current.next
+            current.next = new_node
 
     def add_back(self, value):
         new_node = ListNode(value)
@@ -130,21 +130,22 @@ class LinkeList:
         #         runner = runner.next
         # current = current.next
 
+    def binary_to_decimal(self):
+        res = 0
+        curr = self.head
+        while curr:
+            res = res * 2 + curr.value
+            curr = curr.next
+        return res
+
 
 linked_list = LinkeList()
 
-linked_list.add_back(1)
-linked_list.add_back(2)
-linked_list.add_back(3)
-linked_list.add_back(4)
-linked_list.add_back(1)
-linked_list.add_back(1)
-linked_list.add_back(2)
-linked_list.add_back(3)
-linked_list.add_back(9)
+linked_list.append(1)
+linked_list.append(1)
+linked_list.append(0)
+linked_list.append(1)
+linked_list.append(1)
+linked_list.append(1)
 
-print("beofre: ")
-linked_list.print_list()
-linked_list.remove_duplicates()
-print("after: ")
-linked_list.print_list()
+print(linked_list.binary_to_decimal())

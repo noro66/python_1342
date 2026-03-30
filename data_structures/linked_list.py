@@ -84,8 +84,6 @@ class LinkeList:
         return slow
 
     def has_loop(self):
-        if self.size == 0:
-            return True
         slow = self.head
         fast = self.head
         while fast and fast != self.tail:
@@ -94,6 +92,21 @@ class LinkeList:
             if slow == fast:
                 return True
         return False
+
+    def find_kth_from_end(self, kth):
+        slow = self.head
+        fast = self.head
+
+        for _ in range(kth):
+            if not fast:
+                return None
+            fast = fast.next
+
+        while fast:
+            slow = slow.next
+            fast = fast.next
+
+        return slow
 
 
 linked_list = LinkeList()
@@ -109,6 +122,6 @@ linked_list.add_back(8)
 linked_list.add_back(9)
 
 # linked_list.print_list()
-# print(linked_list.find_middle_node().value)
+print(linked_list.find_kth_from_end(1).value)
 # print()
 # linked_list.print_list()

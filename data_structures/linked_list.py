@@ -138,6 +138,26 @@ class LinkeList:
             curr = curr.next
         return res
 
+    def partition_list(self, num):
+        if not self.head:
+            return None
+        dum1 = ListNode(0)
+        dum2 = ListNode(0)
+        prev1 = dum1
+        prev2 = dum2
+        curr = self.head
+        while curr:
+            if curr.value < num:
+                prev1.next = curr
+                prev1 = curr
+            else:
+                prev2.next = curr
+                prev2 = curr
+            curr = curr.next
+        prev1.next = dum2.next
+        prev2.next = None
+        self.head = dum1.next
+
 
 linked_list = LinkeList()
 

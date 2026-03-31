@@ -4,11 +4,12 @@ class ListNode:
         self.next = next
 
 
-class LinkeList:
-    def __init__(self) -> None:
-        self.head = None
-        self.tail = None
-        self.size: int = 0
+class LinkedList:
+    def __init__(self, value) -> None:
+        node = ListNode(value)
+        self.head = node
+        self.tail = node
+        self.size: int = 1
 
     def append(self, value):
         new_node = ListNode(value)
@@ -19,6 +20,7 @@ class LinkeList:
             while current.next is not None:
                 current = current.next
             current.next = new_node
+        self.size += 1
 
     def add_back(self, value):
         new_node = ListNode(value)
@@ -158,14 +160,32 @@ class LinkeList:
         prev2.next = None
         self.head = dum1.next
 
+    def reverse_between(self, start_index, end_index):
+        if self.size == 1 or not self.head:
+            return None
+        dumy = ListNode(0)
+        dumy.next = self.head
+        prev = dumy
+        for _ in range(start_index):
+            prev = prev.next
+        curr = prev.next
+        for _ in range(end_index - start_index):
+            tmp = curr.next
+            curr.next = tmp.next
+            tmp.next = prev.next
+            prev.next = tmp
+        self.head = dumy.next
 
-linked_list = LinkeList()
 
-linked_list.append(1)
-linked_list.append(1)
-linked_list.append(0)
-linked_list.append(1)
-linked_list.append(1)
-linked_list.append(1)
+linked_list = LinkedList(1)
+linked_list.append(2)
+linked_list.append(3)
+linked_list.append(4)
+linked_list.append(5)
 
-print(linked_list.binary_to_decimal())
+print("Original linked list: ")
+linked_list.print_list()
+
+linked_list.reverse_between(2, 4)
+print("Reversed sublist (2, 4): ")
+linked_list.print_list()

@@ -148,3 +148,34 @@ class DoublyLinkedList:
         self.head = self.tail
         self.tail = temp
 
+    def make_empty(self):
+        self.head = None
+        self.tail = None
+        self.length = 0
+
+    def partition_list(self, x):
+        if not self.head:
+            return
+        dumy1 = Node(0)
+        dumy2 = Node(0)
+        prev1 = dumy1
+        prev2 = dumy2
+        curr = self.head
+        for _ in range(self.length):
+            if curr.value < x:
+                prev1.next = curr
+                curr.prev = prev1
+                prev1 = prev1.next
+            else:
+                prev2.next = curr
+                curr.prev = prev2
+                prev2 = prev2.next
+            curr = curr.next
+        if dumy2.next:
+            prev1.next = dumy2.next
+            prev2.next = None
+            dumy2.next.prev = prev1
+        else:
+            prev1.next = None
+        self.head = dumy1.next
+        self.head.prev = None

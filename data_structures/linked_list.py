@@ -176,6 +176,21 @@ class LinkedList:
             prev.next = tmp
         self.head = dumy.next
 
+    def swap_pairs(self):
+        if not self.head:
+            return
+        dumy = ListNode(0)
+        dumy.next = self.head
+        prev = dumy
+        while prev.next and prev.next.next:
+            first = prev.next
+            second = first.next
+            prev.next = second
+            first.next = second.next
+            second.next = first
+            prev = first
+        self.head = dumy.next
+
 
 linked_list = LinkedList(1)
 linked_list.append(2)
@@ -186,6 +201,6 @@ linked_list.append(5)
 print("Original linked list: ")
 linked_list.print_list()
 
-linked_list.reverse_between(2, 4)
-print("Reversed sublist (2, 4): ")
+linked_list.swap_pairs()
+print("swap pairs : ")
 linked_list.print_list()

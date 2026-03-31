@@ -31,17 +31,14 @@ class DoublyLinkedList:
         return True
 
     def pop(self):
-        if not self.head:
+        if self.length == 0:
             return None
-        last_node = None
+        last_node = self.tail
+        
         if self.length == 1:
-            last_node = self.head
-            last_node.prev = None
-            last_node.next = None
-            self.head = None
-            self.tail = None
+            self.head == None
+            self.tail == None
         else:
-            last_node = self.tail
             self.tail = self.tail.prev
             self.tail.next = None
             last_node.prev = None

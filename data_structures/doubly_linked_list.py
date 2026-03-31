@@ -45,16 +45,14 @@ class DoublyLinkedList:
         self.length -= 1
         return last_node
 
-
-my_doubly_linked_list = DoublyLinkedList(1)
-my_doubly_linked_list.append(2)
-
-
-# (2) Items - Returns 2 Node
-print(my_doubly_linked_list.pop().value)
-# (1) Item -  Returns 1 Node
-print(my_doubly_linked_list.pop().value)
-# (0) Items - Returns None
-print(my_doubly_linked_list.pop())
-
-
+    def prepend(self, value):
+        new_node = Node(value)
+        if not self.head:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            new_node.next = self.head
+            self.head.prev = new_node
+            self.head = new_node
+        self.length += 1
+        return True

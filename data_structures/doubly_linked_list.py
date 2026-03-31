@@ -70,3 +70,16 @@ class DoublyLinkedList:
             node.next = None
         self.length -= 1
         return node
+
+    def get(self, index: int):
+        if index < 0 or index >= self.length:
+            return None
+        if index < self.length // 2:
+            temp = self.head
+            for _ in range(index):
+                temp = temp.next
+        else:
+            temp = self.tail
+            for _ in range(self.length - 1, index, -1):
+                temp = temp.prev
+        return temp

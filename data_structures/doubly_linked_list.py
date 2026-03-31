@@ -56,3 +56,17 @@ class DoublyLinkedList:
             self.head = new_node
         self.length += 1
         return True
+
+    def pop_first(self):
+        if not self.head:
+            return None
+        node = self.head
+        if self.length == 1:
+            self.head = None
+            self.tail = None
+        else:
+            self.head = self.head.next
+            self.head.prev = None
+            node.next = None
+        self.length -= 1
+        return node

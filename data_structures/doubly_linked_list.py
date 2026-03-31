@@ -134,20 +134,16 @@ class DoublyLinkedList:
             backward = backward.prev
         return True
 
-
-my_dll_1 = DoublyLinkedList(1)
-my_dll_1.append(2)
-my_dll_1.append(3)
-my_dll_1.append(2)
-my_dll_1.append(1)
-
-print('my_dll_1 is_palindrome:')
-print(my_dll_1.is_palindrome())
-
-
-my_dll_2 = DoublyLinkedList(1)
-my_dll_2.append(2)
-my_dll_2.append(3)
-
-print('\nmy_dll_2 is_palindrome:')
-print( my_dll_2.is_palindrome() )
+    def reverse(self):
+        if self.length < 2:
+            return
+        current = self.head
+        temp = current.prev
+        for _ in range(self.length):
+            current.prev = current.next
+            current.next = temp
+            temp = current
+            current = current.prev
+        temp = self.head
+        self.head = self.tail
+        self.tail = temp

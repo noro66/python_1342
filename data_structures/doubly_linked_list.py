@@ -201,42 +201,23 @@ class DoublyLinkedList:
         self.head = dumy.next
         self.head.prev = None
 
-# Test Cases
-print("\nTest 1: Middle segment reversal")
-dll1 = DoublyLinkedList(3)
-for v in [8, 5, 10, 2, 1]:
-    dll1.append(v)
-print("BEFORE: ", end="")
-dll1.print_list()
-dll1.reverse_between(1, 4)
-print("AFTER:  ", end="")
-dll1.print_list()
+    def swap_pairs(self):
+        if not self.head:
+            return
+        dumy = Node(0)
+        dumy.next = self.head
+        prev = dumy
+        while prev.next and prev.next.next:
+            first = prev.next
+            second = first.next
 
-print("\nTest 2: Full list reversal")
-dll2 = DoublyLinkedList(1)
-for v in [2, 3, 4, 5]:
-    dll2.append(v)
-print("BEFORE: ", end="")
-dll2.print_list()
-dll2.reverse_between(0, 4)
-print("AFTER:  ", end="")
-dll2.print_list()
+            prev.next = second
+            second.prev = prev
+            first.prev = second
+            first.next = second.next
+            if second.next:
+                second.next.prev = first
+            second.next = first
 
-print("\nTest 3: No-op on single node")
-dll3 = DoublyLinkedList(9)
-print("BEFORE: ", end="")
-dll3.print_list()
-dll3.reverse_between(0, 0)
-print("AFTER:  ", end="")
-dll3.print_list()
-
-print("\nTest 4: Reversal with head involved")
-dll4 = DoublyLinkedList(7)
-for v in [8, 9]:
-    dll4.append(v)
-print("BEFORE: ", end="")
-dll4.print_list()
-dll4.reverse_between(0, 2)
-print("AFTER:  ", end="")
-dll4.print_list()
-
+            prev = first
+        self.head = dumy.next

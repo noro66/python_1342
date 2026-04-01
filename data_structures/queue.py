@@ -21,3 +21,17 @@ class Queue:
         self.last = new_node
         self.length += 1
         return True
+
+    def dequeue(self):
+        if not self.first:
+            return None
+        node = None
+        if self.length == 1:
+            node = self.first
+            self.first = None
+            self.last = None
+        else:
+            node = self.first
+            self.first = self.first.next
+        self.length -= 1
+        return node

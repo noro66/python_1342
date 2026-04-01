@@ -23,12 +23,14 @@ class Stack:
         self.height += 1
         return True
 
-    def pop(self, value):
-        if not self.top:
-            return none
+    def pop(self):
+        if self.height == 0:
+            return None
         tmp = self.top
         self.top = tmp.next
+        tmp.next = None
         self.height -= 1
+        return tmp
 
 my_stack = Stack(4)
 my_stack.push(3)

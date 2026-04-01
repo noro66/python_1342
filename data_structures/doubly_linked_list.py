@@ -148,11 +148,6 @@ class DoublyLinkedList:
         self.head = self.tail
         self.tail = temp
 
-    def make_empty(self):
-        self.head = None
-        self.tail = None
-        self.length = 0
-
     def partition_list(self, x):
         if not self.head:
             return
@@ -179,3 +174,69 @@ class DoublyLinkedList:
             prev1.next = None
         self.head = dumy1.next
         self.head.prev = None
+
+    def make_empty(self):
+        self.head = None
+        self.length = 0
+
+    def reverse_between(self, start_index, end_index):
+        if not self.head:
+            return
+        dumy = Node(0)
+        dumy.next = self.head
+        self.head.prev = dumy
+        prev = dumy
+        for _ in range(start_index):
+            prev = prev.next
+        curr = prev.next
+        for _ in range(end_index - start_index):
+            temp = curr.next
+            curr.next = temp.next
+            if temp.next:
+                temp.next.prev = curr
+            temp.next = prev.next
+            prev.next.prev = temp
+            temp.prev = prev
+            prev.next = temp
+        self.head = dumy.next
+        self.head.prev = None
+
+# Test Cases
+print("\nTest 1: Middle segment reversal")
+dll1 = DoublyLinkedList(3)
+for v in [8, 5, 10, 2, 1]:
+    dll1.append(v)
+print("BEFORE: ", end="")
+dll1.print_list()
+dll1.reverse_between(1, 4)
+print("AFTER:  ", end="")
+dll1.print_list()
+
+print("\nTest 2: Full list reversal")
+dll2 = DoublyLinkedList(1)
+for v in [2, 3, 4, 5]:
+    dll2.append(v)
+print("BEFORE: ", end="")
+dll2.print_list()
+dll2.reverse_between(0, 4)
+print("AFTER:  ", end="")
+dll2.print_list()
+
+print("\nTest 3: No-op on single node")
+dll3 = DoublyLinkedList(9)
+print("BEFORE: ", end="")
+dll3.print_list()
+dll3.reverse_between(0, 0)
+print("AFTER:  ", end="")
+dll3.print_list()
+
+print("\nTest 4: Reversal with head involved")
+dll4 = DoublyLinkedList(7)
+for v in [8, 9]:
+    dll4.append(v)
+print("BEFORE: ", end="")
+dll4.print_list()
+dll4.reverse_between(0, 2)
+print("AFTER:  ", end="")
+dll4.print_list()
+

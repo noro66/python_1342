@@ -1,5 +1,8 @@
+from collections import defaultdict
+
+
 class HashTable:
-    def __init__(self, size = 7):
+    def __init__(self, size=7):
         self.data_map = [None] * size
 
     def __hash(self, key):
@@ -68,3 +71,11 @@ def first_non_repeating_char(string):
         if v is False:
             return k
     return None
+
+
+def group_anagrams(strings):
+    res = defaultdict(list)
+    for s in strings:
+        key = tuple(sorted(s))
+        res[key].append(s)
+    return list(res.values())

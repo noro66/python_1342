@@ -33,3 +33,25 @@ class HashTable:
                 for j in range(len(self.data_map[i])):
                     all_keys.append(self.data_map[i][j][0])
         return all_keys
+
+
+def item_in_common(list1, list2):
+        items = set(list1)
+
+        for item  in list2:
+            if item in items:
+                return True
+        return False
+
+
+def find_duplicates(nums: list):
+    dups = {}
+    res = []
+    for num in nums:
+        if num in dups:
+            if dups[num] is False:
+                res.append(num)
+            dups[num] = True
+        else:
+            dups[num] = False
+    return res

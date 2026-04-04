@@ -55,3 +55,16 @@ def find_duplicates(nums: list):
         else:
             dups[num] = False
     return res
+
+
+def first_non_repeating_char(string):
+    repeated = {}
+    for c in string:
+        if c in repeated:
+            repeated[c] = True
+        else:
+            repeated[c] = False
+    for k, v in repeated.items():
+        if v is False:
+            return k
+    return None
